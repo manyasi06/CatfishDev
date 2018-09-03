@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/manyasi06/CatfishDev/issues"
   },
-  "homepage": "https://github.com/manyasi06/CatfishDev#readme"
+  "homepage": "https://github.com/manyasi06/CatfishDev#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "mongoose": "^5.2.12",
+    "path": "^0.12.7"
+  }
 }
