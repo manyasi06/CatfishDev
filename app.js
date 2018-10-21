@@ -25,7 +25,7 @@ defaultLayout: 'main'
 app.set('view engine', 'handlebars');
 
 //add database schema
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3010);
 
 
 app.get('/',function(req,res,next){
