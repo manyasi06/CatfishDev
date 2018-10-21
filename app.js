@@ -2,6 +2,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 var handlebars = require('express-handlebars');
+var mysql = ('./dbcon.js');
+
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -25,10 +27,35 @@ app.set('view engine', 'handlebars');
 //add database schema
 app.set('port', process.env.PORT || 3000);
 
-app.get('/',function(req,res){
-    res.render('home');
-    //res.send("Home page");
-});
+
+app.get('/',function(req,res,next){
+    var context = {};
+    var createString = "CREATE TABLE diagnostic(" +
+    "id INT PRIMARY KEY AUTO_INCREMENT," +
+    "text VARCHAR(255) NOT NULL)";
+    mysql.pool.query('DROP TABLE IF EXISTS diagnostic', function(err){
+      if(err){
+        next(err);
+        return;
+      }
+      mysql.pool.query(createString, function(err){
+        if(err){
+          next(err);
+          return;
+        }
+        mysql.pool.query('INSERT INTO diagnostic (`text`) VALUES ("MySQL is Working!")',function(err){
+          mysql.pool.query('SELECT * FROM diagnostic', function(err, rows, fields){
+            context.results = JSON.stringify(rows);
+            res.render('home',context);
+          });
+        });
+      });
+    });
+  });
+// app.get('/',function(req,res){
+//     res.render('home');
+//     //res.send("Home page");
+// });
   
 app.get('/Add',function(req,res){
     res.render('Add');
