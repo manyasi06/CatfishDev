@@ -25,6 +25,11 @@ defaultLayout: 'main'
 app.set('view engine', 'handlebars');
 
 //add database schema
+pool.connect(function(err){
+    if (err) throw err;
+    console.log("Connected to Database\n");
+});
+
 app.set('port', process.env.PORT || 3010);
 
 
