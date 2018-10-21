@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 var handlebars = require('express-handlebars');
-var mysql = ('./dbcon.js');
+var mysql = require('./dbcon.js');
 
 
 app.use(bodyParser.urlencoded({extended: false}));
