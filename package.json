@@ -21,6 +21,7 @@
     "cors": "^2.8.4",
     "express": "^4.16.3",
     "express-handlebars": "^3.0.0",
+    "forever": "^0.15.3",
     "handlebars": "^4.0.12",
     "mongoose": "^5.2.12",
     "mysql": "^2.16.0",
