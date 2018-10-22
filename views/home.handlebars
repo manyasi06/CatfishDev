@@ -26,6 +26,42 @@
   </a>
 </div>
 
+<form>
+  <div class="form-inline">
+    <label for="ProteinID">ProteinId:</label>
+    <input type="text" class="form-control" id="Input_ProteinID">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+<br>
+<table id="Interactome">
+    <thead>
+      <th>ProteinID_A</th>
+      <th>ProteinID_B</th>
+      <th>Annotation_A</th>
+      <th>Annotation_B</th>
+      <th>Organism</th>
+    </thead>
+    <tbody id="Interactome_body">
+      {{#data.Interactome}}
+      <tr>
+          <td id="P_ida">{{ProteinID_A}}</td>
+          <td id="P_idb">{{ProteinID_B}}</td>
+          <td id="PA_anno">{{PA_annotation}}</td>
+          <td id="PB_anno">{{PB_annotation}}</td>
+          <td id="Organism">{{Organism}}</td>
+      </tr>
+      {{/data.Interactome}}
+    </tbody>
+</table>
+
+
+<p>Add something to visualize the rna-seq info page</p>
+
+
+
 <p>Welcome to the demo website for CS340</p>
 <br>
 <p>Developed by: Bryan Musungu</p>

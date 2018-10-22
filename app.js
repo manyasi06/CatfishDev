@@ -25,42 +25,38 @@ defaultLayout: 'main'
 app.set('view engine', 'handlebars');
 
 //add database schema
-pool.connect(function(err){
-    if (err) throw err;
-    console.log("Connected to Database\n");
-});
 
 app.set('port', process.env.PORT || 3010);
 
 
-app.get('/',function(req,res,next){
-    var context = {};
-    var createString = "CREATE TABLE diagnostic(" +
-    "id INT PRIMARY KEY AUTO_INCREMENT," +
-    "text VARCHAR(255) NOT NULL)";
-    mysql.pool.query('DROP TABLE IF EXISTS diagnostic', function(err){
-      if(err){
-        next(err);
-        return;
-      }
-      mysql.pool.query(createString, function(err){
-        if(err){
-          next(err);
-          return;
-        }
-        mysql.pool.query('INSERT INTO diagnostic (`text`) VALUES ("MySQL is Working!")',function(err){
-          mysql.pool.query('SELECT * FROM diagnostic', function(err, rows, fields){
-            context.results = JSON.stringify(rows);
-            res.render('home',context);
-          });
-        });
-      });
-    });
-  });
-// app.get('/',function(req,res){
-//     res.render('home');
-//     //res.send("Home page");
-// });
+// app.get('/',function(req,res,next){
+//     var context = {};
+//     var createString = "CREATE TABLE diagnostic(" +
+//     "id INT PRIMARY KEY AUTO_INCREMENT," +
+//     "text VARCHAR(255) NOT NULL)";
+//     mysql.pool.query('DROP TABLE IF EXISTS diagnostic', function(err){
+//       if(err){
+//         next(err);
+//         return;
+//       }
+//       mysql.pool.query(createString, function(err){
+//         if(err){
+//           next(err);
+//           return;
+//         }
+//         mysql.pool.query('INSERT INTO diagnostic (`text`) VALUES ("MySQL is Working!")',function(err){
+//           mysql.pool.query('SELECT * FROM diagnostic', function(err, rows, fields){
+//             context.results = JSON.stringify(rows);
+//             res.render('home',context);
+//           });
+//         });
+//       });
+//     });
+//   });
+app.get('/',function(req,res){
+    res.render('home');
+    //res.send("Home page");
+});
   
 app.get('/Add',function(req,res){
     res.render('Add');
@@ -70,6 +66,11 @@ app.get('/Add',function(req,res){
 app.get('/Remove',function(req,res){
     res.render('Remove');
     //res.send("This to remove interactions");
+});
+
+app.get('/Update',function(req,res){
+    //res.send("This will be the redirect page to update");
+    res.render('Update');
 });
 
 
