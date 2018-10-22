@@ -25,6 +25,13 @@ defaultLayout: 'main'
 app.set('view engine', 'handlebars');
 
 //add database schema
+<<<<<<< HEAD
+=======
+//mysql.connect(function(err){
+ //   if (err) throw err;
+   // console.log("Connected to Database\n");
+//});
+>>>>>>> 11009f9c044a2792a82e64ee8f154c41d73cd0b1
 
 app.set('port', process.env.PORT || 3010);
 

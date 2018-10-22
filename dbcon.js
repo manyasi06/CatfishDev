@@ -7,4 +7,5 @@ var pool = mysql.createPool({
   database        : 'cs340_musungub'
 });
 
+
 module.exports.pool = pool;
