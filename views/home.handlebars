@@ -36,7 +36,7 @@
 
 
 <br>
-<table id="Interactome">
+<table id="Interactome" style="border:  1px solid black">
     <thead>
       <th>ProteinID_A</th>
       <th>ProteinID_B</th>
@@ -44,16 +44,18 @@
       <th>Annotation_B</th>
       <th>Organism</th>
     </thead>
-    <tbody id="Interactome_body">
-      {{#data.Interactome}}
+    <tbody id="Interactome_body" style="border:  1px solid black">
+      {{!-- {{#data.Interactome}} --}}
       <tr>
           <td id="P_ida">{{ProteinID_A}}</td>
           <td id="P_idb">{{ProteinID_B}}</td>
           <td id="PA_anno">{{PA_annotation}}</td>
           <td id="PB_anno">{{PB_annotation}}</td>
           <td id="Organism">{{Organism}}</td>
+          <td id="delete"> <input type="button" value="delete" onclick="del_row(this)" /></td>
+          <td id="edit"> <input type="button" value="edit" onClick="modifyRow(this)"/></td>
       </tr>
-      {{/data.Interactome}}
+      {{!-- {{/data.Interactome}} --}}
     </tbody>
 </table>
 
