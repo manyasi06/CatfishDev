@@ -28,6 +28,10 @@
 
 <form>
   <div class="form-inline">
+    <label for="Protein">Search</label>
+    <input type="text" class="form-control" id="Input_ProteinID">
+  </div>
+  <div class="form-inline">
     <label for="ProteinID">ProteinId:</label>
     <input type="text" class="form-control" id="Input_ProteinID">
   </div>
@@ -45,17 +49,17 @@
       <th>Organism</th>
     </thead>
     <tbody id="Interactome_body" style="border:  1px solid black">
-      {{!-- {{#data.Interactome}} --}}
+      {{#data.inters}}
+      {{!-- {{#each data.Interactome}} --}}
       <tr>
           <td id="P_ida">{{ProteinID_A}}</td>
           <td id="P_idb">{{ProteinID_B}}</td>
           <td id="PA_anno">{{PA_annotation}}</td>
-          <td id="PB_anno">{{PB_annotation}}</td>
           <td id="Organism">{{Organism}}</td>
           <td id="delete"> <input type="button" value="delete" onclick="del_row(this)" /></td>
           <td id="edit"> <input type="button" value="edit" onClick="modifyRow(this)"/></td>
       </tr>
-      {{!-- {{/data.Interactome}} --}}
+      {{/data.inters}}
     </tbody>
 </table>
 
