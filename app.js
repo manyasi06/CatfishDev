@@ -4,14 +4,14 @@ var app = express();
 var handlebars = require('express-handlebars');
 var async = require('async');
 var mysql = require('./dbcon.js');
-//var catfish = require('./catfish.js');
+var catfish = require('./catfish.js');
 
 
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use('/',express.static('public'));
-//app.use('/catfish', catfish);
+app.use('/', catfish);
 
 
 
@@ -63,43 +63,9 @@ function insertOrtholog(req,res,mysql,complete){
 
 
 
-app.get('/',function(req,res,next){
-    var context = {};
-    mysql.pool.query('SELECT NCBI_ProteinID, ProteinIDB, Annotation, Organism  FROM ' 
-    + 'GeneID as a inner join Ortholog as b On a.NCBI_ProteinID =b.ProteinIDA', function(err,rows,fields){
-        if(err){
-            next(err);
-            return;
-        }
-        //console.log(JSON.stringify(rows));
-        //console.log(JSON.stringify(fields));
-        row_data = {};
-        row_data.inters = [];
-        for( row in rows){
-            inter = {};
-
-            inter.ProteinID_A = rows[row].NCBI_ProteinID;
-            inter.ProteinID_B = rows[row].ProteinIDB;
-            inter.PA_annotation = rows[row].Annotation;
-            inter.Organism = rows[row].Organism;
-            
-            row_data.inters.push(inter);
-        }
-        //make data into json
-        context.results = JSON.stringify(rows);
-        context.data = row_data;
-
-        console.log('This is the results:\n' + context.data);
-        res.render('home', context);
-
-    })
-    
-    //res.send("Home page");
-});
-  
-
+/*
 app.post('/addOrtho',function(req,res,next){
-    /*callbackCount = 0;
+    callbackCount = 0;
     insertGeneID(req,res,mysql,complete);
     if(callbackCount == 1){
         console.log('function 2');
@@ -113,7 +79,7 @@ app.post('/addOrtho',function(req,res,next){
         if(callbackCount == 2){
             console.log("Complete");
             res.redirect('/');
-    }*/
+    }
 
     mysql.pool.query('INSERT INTO GeneID ( NCBI_ProteinID, NCBI_GeneID, Annotation) Value (?,?,?)',
     [req.body.Input_ProteinIDA, req.body.In_GeneID, req.body.Ann_ProteinIDA], function(err,result){
@@ -144,6 +110,7 @@ app.post('/addGeneExp',function(req,res,next){
         res.redirect('/');
     })
 })
+*/
 
 app.get('/Add',function(req,res){
     res.render('Add');

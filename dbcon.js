@@ -1,5 +1,5 @@
 var mysql = require('mysql');
-var pool = mysql.createPool({
+/*var pool = mysql.createPool({
   connectionLimit : 10,
   host            : 'classmysql.engr.oregonstate.edu',
   user            : 'cs340_musungub',
@@ -7,7 +7,7 @@ var pool = mysql.createPool({
   database        : 'cs340_musungub'
 });
 
-/*
+
 var pool = mysql.createPool({
     connectionLimit : 10,
     host            : 'localhost',
@@ -18,5 +18,13 @@ var pool = mysql.createPool({
   });
   */
 
+var pool = mysql.createPool({
+    connectionLimit : 10,
+    host            : 'localhost',
+    user            : 'root',
+    password        : 'plb403ADM',
+    database        : 'data2',
+    multipleStatements: true
+  });
 
 module.exports.pool = pool;
