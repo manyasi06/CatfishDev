@@ -40,9 +40,9 @@
     <label for="ProteinID">Annotation Protein A: </label>
     <input type="text" class="form-control" id="Ann_ProteinIDA" name="Ann_ProteinIDA">
   </div>
-  <div class="form-inline">
+  <div class="form-inline"> 
     <label for="ProteinID">Organism: </label>
-    <input type="text" class="form-control" id="Organism" name="Organism">
+    <input type="text" class="form-control" id="Organism" name="Organism"> 
   </div>
   <div class="form-inline">
     <label for="ProteinID">ProteinId B: </label>
@@ -94,6 +94,26 @@
       {{/data.inters}}
     </tbody>
 </table>
+
+<br>
+<table>
+  <tbody>
+    {{#data.organisms}}
+      <option>{{Organism}}</option>
+    {{/data.organisms}}
+  </tbody>
+</table>
+
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Dropdown
+  </button>
+  {{#each data.organisms}}
+  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+    <button class="dropdown-item" type="button">{{this}}</button>
+  </div>
+  {{/each}}
+</div>
 
 
 <p>Add something to visualize the rna-seq info page</p>

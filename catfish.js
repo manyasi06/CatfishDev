@@ -16,19 +16,24 @@ router.get('/',function(req,res,next){
         }
         row_data = {};
         row_data.inters = [];
+        row_data.organisms = [];
         for( row in rows){
             inter = {};
+            organ = {};
 
             inter.ProteinID_A = rows[row].NCBI_ProteinID;
             inter.ProteinID_B = rows[row].ProteinIDB;
             inter.PA_annotation = rows[row].Annotation;
             inter.Organism = rows[row].Organism;
-            
+            //organ.Organism = rows[row].Organism;
+            row_data.organisms.push(rows[row].Organism);
             row_data.inters.push(inter);
         }
         //make data into json
         context.results = JSON.stringify(rows);
         context.data = row_data;
+
+        console.log(context.data);
 
         console.log('This is the results:\n' + context.data);
         res.render('home', context);

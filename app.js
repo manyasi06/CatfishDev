@@ -62,56 +62,6 @@ function insertOrtholog(req,res,mysql,complete){
 
 
 
-
-/*
-app.post('/addOrtho',function(req,res,next){
-    callbackCount = 0;
-    insertGeneID(req,res,mysql,complete);
-    if(callbackCount == 1){
-        console.log('function 2');
-        insertOrtholog(req,res,mysql,complete);
-    }
-    //if(callbackCount == 1)
-        //insertOrtholog(req,res,mysql,complete);
-    function complete(){
-        callbackCount++;
-        }
-        if(callbackCount == 2){
-            console.log("Complete");
-            res.redirect('/');
-    }
-
-    mysql.pool.query('INSERT INTO GeneID ( NCBI_ProteinID, NCBI_GeneID, Annotation) Value (?,?,?)',
-    [req.body.Input_ProteinIDA, req.body.In_GeneID, req.body.Ann_ProteinIDA], function(err,result){
-        if(err){
-            next(err)
-            return;
-        }
-        mysql.pool.query('INSERT INTO Ortholog (ProteinIDA, Organism, ProteinIDB, Experimental_condition) VALUES (?,?,?,?)',
-        [req.body.Input_ProteinIDA,req.body.Organism,req.body.Input_ProteinIDB,req.body.Exp_Val], function(err,result){
-            if(err){
-                next(err);
-                return;
-            }
-            res.redirect('/');
-        });
-    });
-});
-
-app.post('/addGeneExp',function(req,res,next){
-    
-    mysql.pool.query('INSERT INTO RNA_seq_Sample_info (ProteinNcbiID, Sample_info, Expression) values (?,?,?)',
-    [req.body.GID,req.body.SID,req.body.ExpreVal],function(err,result){
-        if(err){
-            console.log("Error");
-            next(err);
-            return;
-        }
-        res.redirect('/');
-    })
-})
-*/
-
 app.get('/Add',function(req,res){
     res.render('Add');
     //res.send("This is the add interaction page");
