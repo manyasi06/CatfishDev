@@ -2,11 +2,16 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 var handlebars = require('express-handlebars');
+var async = require('async');
 var mysql = require('./dbcon.js');
+//var catfish = require('./catfish.js');
+
 
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use('/',express.static('public'));
+//app.use('/catfish', catfish);
 
 
 
@@ -28,31 +33,36 @@ app.set('view engine', 'handlebars');
 
 app.set('port', process.env.PORT || 3010);
 
+function insertGeneID(req,res,mysql,complete){
+    console.log(req.body);
+    var query = 'INSERT INTO GeneID ( NCBI_ProteinID, NCBI_GeneID, Annotation) Value (?,?,?)'; 
+    var inserts = [req.body.Input_ProteinIDA, req.body.In_GeneID, req.body.Ann_ProteinIDA];
+    mysql.pool.query(query,inserts, function(error,results, fields){
+        if(error){
+            res.write(JSON.stringify(error));
+        }
+        complete();
+    });
+}
 
-// app.get('/',function(req,res,next){
-//     var context = {};
-//     var createString = "CREATE TABLE diagnostic(" +
-//     "id INT PRIMARY KEY AUTO_INCREMENT," +
-//     "text VARCHAR(255) NOT NULL)";
-//     mysql.pool.query('DROP TABLE IF EXISTS diagnostic', function(err){
-//       if(err){
-//         next(err);
-//         return;
-//       }
-//       mysql.pool.query(createString, function(err){
-//         if(err){
-//           next(err);
-//           return;
-//         }
-//         mysql.pool.query('INSERT INTO diagnostic (`text`) VALUES ("MySQL is Working!")',function(err){
-//           mysql.pool.query('SELECT * FROM diagnostic', function(err, rows, fields){
-//             context.results = JSON.stringify(rows);
-//             res.render('home',context);
-//           });
-//         });
-//       });
-//     });
-//   });
+
+function insertOrtholog(req,res,mysql,complete){
+    console.log('Adding Ortholog:\n');
+    console.log(req.body);
+    var query = 'INSERT INTO Ortholog (ProteinIDA, Organism, ProteinIDB, Experimental_condition) VALUES (?,?,?,?)';
+    var inserts = [req.body.Input_ProteinIDA,req.body.Organism,req.body.Input_ProteinIDB,req.body.Exp_Val];
+    mysql.pool.query(query,inserts, function(error,results, fields){
+        if(error){
+            res.write(JSON.stringify(error));
+        }
+        complete();
+    });      
+    
+}
+
+
+
+
 app.get('/',function(req,res,next){
     var context = {};
     mysql.pool.query('SELECT NCBI_ProteinID, ProteinIDB, Annotation, Organism  FROM ' 
@@ -87,6 +97,54 @@ app.get('/',function(req,res,next){
     //res.send("Home page");
 });
   
+
+app.post('/addOrtho',function(req,res,next){
+    /*callbackCount = 0;
+    insertGeneID(req,res,mysql,complete);
+    if(callbackCount == 1){
+        console.log('function 2');
+        insertOrtholog(req,res,mysql,complete);
+    }
+    //if(callbackCount == 1)
+        //insertOrtholog(req,res,mysql,complete);
+    function complete(){
+        callbackCount++;
+        }
+        if(callbackCount == 2){
+            console.log("Complete");
+            res.redirect('/');
+    }*/
+
+    mysql.pool.query('INSERT INTO GeneID ( NCBI_ProteinID, NCBI_GeneID, Annotation) Value (?,?,?)',
+    [req.body.Input_ProteinIDA, req.body.In_GeneID, req.body.Ann_ProteinIDA], function(err,result){
+        if(err){
+            next(err)
+            return;
+        }
+        mysql.pool.query('INSERT INTO Ortholog (ProteinIDA, Organism, ProteinIDB, Experimental_condition) VALUES (?,?,?,?)',
+        [req.body.Input_ProteinIDA,req.body.Organism,req.body.Input_ProteinIDB,req.body.Exp_Val], function(err,result){
+            if(err){
+                next(err);
+                return;
+            }
+            res.redirect('/');
+        });
+    });
+});
+
+app.post('/addGeneExp',function(req,res,next){
+    
+    mysql.pool.query('INSERT INTO RNA_seq_Sample_info (ProteinNcbiID, Sample_info, Expression) values (?,?,?)',
+    [req.body.GID,req.body.SID,req.body.ExpreVal],function(err,result){
+        if(err){
+            console.log("Error");
+            next(err);
+            return;
+        }
+        res.redirect('/');
+    })
+})
+
 app.get('/Add',function(req,res){
     res.render('Add');
     //res.send("This is the add interaction page");
