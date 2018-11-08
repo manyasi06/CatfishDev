@@ -72,8 +72,48 @@ router.post('/addGeneExp',function(req,res,next){
             return;
         }
         res.redirect('/');
-    })
-})
+    });
+});
+
+
+router.get('/organism',function(req,res,next){
+    var context = {};
+    mysql.pool.query('SELECT Organism_Type from Organism',function(err,rows,fields){
+        if(err){
+            console.log("Error\n");
+            next(err);
+            return;
+        }
+        console.log(rows);
+        row_data = {};
+        row_data.inters = [];
+        row_data.organisms = [];
+        for( row in rows){
+            inter = {};
+
+            inter.Organism = rows[row].Organism_Type;
+            row_data.inters.push(inter);
+        }
+        //make data into json
+        context.results = JSON.stringify(rows);
+        context.data = row_data;
+
+        console.log(context.data);
+
+        console.log('This is the results:\n' + context.data);
+        res.render('organism', context);
+    }); 
+});
+
+router.post('/addOrganism', function(req,res,next){
+    mysql.pool.query('INSERT INTO Organism (Organism_Type) values (?)',[req.body.Organism],function(err,result){
+        if(err){
+            next(err);
+            return;
+        }
+        res.redirect('/organism');
+    });
+});
 
 module.exports = router;
 

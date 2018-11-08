@@ -1,0 +1,25 @@
+{{> header}}
+<div>
+
+<form action="/addOrganism" method="POST">
+    <div class="form-inline">
+        <label for="Organism">Organism: </label>
+        <input type="text" class="form-control" id="Organism" name="Organism">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<table id="Interactome" style="border:  1px solid black">
+    <thead>
+      <th>Organism</th>
+    </thead>
+    <tbody id="Interactome_body" style="border:  1px solid black">
+      {{#data.inters}}
+      <tr>
+          <td id="Organism" name="Organism">{{Organism}}</td>
+      </tr>
+      {{/data.inters}}
+    </tbody>
+</table>
+
+</div>

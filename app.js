@@ -62,7 +62,7 @@ function insertOrtholog(req,res,mysql,complete){
 
 
 
-app.get('/Add',function(req,res){
+app.get('/Expression',function(req,res){
     res.render('Add');
     //res.send("This is the add interaction page");
 });
