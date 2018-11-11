@@ -6,8 +6,26 @@ var mysql = require('./dbcon.js');
 
 
 
+function getOrganism(res, mysql, context, complete){
+    mysql.pool.query("SELECT Organism_Type from Organism", function(error, results, fields){
+        if(error){
+            res.write(JSON.stringify(error));
+            res.end();
+        }
+        someData = [];
+        for(row in results){
+            someData.push(results[row].Organism_Type);
+        }
+        context.someData = someData;
+        complete();
+    });
+}
+
+
 router.get('/',function(req,res,next){
     var context = {};
+    var callbackCount = 0;
+    getOrganism(res,mysql,context,complete);
     mysql.pool.query('SELECT NCBI_ProteinID, ProteinIDB, Annotation, Organism  FROM ' 
     + 'GeneID as a inner join Ortholog as b On a.NCBI_ProteinID =b.ProteinIDA', function(err,rows,fields){
         if(err){
@@ -32,14 +50,24 @@ router.get('/',function(req,res,next){
         //make data into json
         context.results = JSON.stringify(rows);
         context.data = row_data;
-
-        console.log(context.data);
-
-        console.log('This is the results:\n' + context.data);
-        res.render('home', context);
+        // console.log('\nDataSet One: \n');
+        // console.log(context.results);
+        // if(callbackCount >= 1){
+        // console.log('\nDataSet Two: \n');
+        // console.log(context.someData);
+        // }
+        // console.log('This is the results:\n' + context.data);
+        complete();
 
     })
-    
+    function complete(){
+        callbackCount++;
+        if(callbackCount >= 2){
+            console.log(context);
+            res.render('home', context);
+        }
+
+    }
     //res.send("Home page");
 });
 
@@ -78,6 +106,7 @@ router.post('/addGeneExp',function(req,res,next){
 
 router.get('/organism',function(req,res,next){
     var context = {};
+    
     mysql.pool.query('SELECT Organism_Type from Organism',function(err,rows,fields){
         if(err){
             console.log("Error\n");
@@ -90,7 +119,7 @@ router.get('/organism',function(req,res,next){
         row_data.organisms = [];
         for( row in rows){
             inter = {};
-
+            inter.id = rows[row].Organism_id; //test your organism id.
             inter.Organism = rows[row].Organism_Type;
             row_data.inters.push(inter);
         }
@@ -99,8 +128,8 @@ router.get('/organism',function(req,res,next){
         context.data = row_data;
 
         console.log(context.data);
-
-        console.log('This is the results:\n' + context.data);
+        console.log('\nThis is the results:\n' + context.data);
+        
         res.render('organism', context);
     }); 
 });
