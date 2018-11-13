@@ -5,8 +5,33 @@ var router = express.Router();
 var mysql = require('./dbcon.js');
 
 
-function getProteinID(res,mysql,context,complete){
+function getProteinID(res,req,mysql,complete, a){
+    var query = "select NCBI_ProteinID from geneid where NCBI_ProteinID = ?";
+    var search = [req.body.Input_ProteinIDA]
+    mysql.pool.query(query,search, function(error, results, fields){
+        if(error){
+            res.write(JSON.stringify(error));
+            res.end();
+        }
+        /*
+        someData = [];
+        for(row in results){
+            someData.push(results[row].Organism_Type);
+        }
+        context.Person = someData;*/
 
+        //console.log(results.length > 0);
+        if(results.length > 0){
+            a = 'true';
+            console.log(a);
+        }else{
+            a = 'false';
+        }
+        
+        
+        complete();
+        return a;
+    });
 }
 
 function insertGeneID(req,res,mysql,complete){
@@ -99,13 +124,22 @@ router.get('/',function(req,res,next){
 });
 
 router.post('/addOrtho',function(req,res,next){
+    callbackCount = 0;
+    var alpha = ' ';
+    alpha = getProteinID(res,req,mysql, complete, alpha);
+    //if(a === 'true'){
+      //  console.log("Test worked");
+        //res.redirect('/')
+    //}
+   
+    /*
     mysql.pool.query('INSERT INTO GeneID ( NCBI_ProteinID, NCBI_GeneID, Annotation) values (?,?,?)',
     [req.body.Input_ProteinIDA, req.body.In_GeneID, req.body.Ann_ProteinIDA], function(err,result){
         if(err){
             next(err)
             return;
         }
-        console.log("This is the name of my organism \n" + JSON.stringify(req.body));
+        
         
         mysql.pool.query(
             'INSERT INTO Ortholog (ProteinIDA, Organism, ProteinIDB, Experimental_condition)  values (' +
@@ -122,7 +156,16 @@ router.post('/addOrtho',function(req,res,next){
             res.redirect('/');
         });
         
-    });
+    });*/
+    function complete(){
+        callbackCount++;
+        console.log("This is my check value: " + alpha == 'true');
+        if(callbackCount == 1){
+            console.log("Completed " + callbackCount);
+             console.log("\n This is the A value: " + alpha);
+            res.redirect('/');
+        }}
+
 });
   
 
