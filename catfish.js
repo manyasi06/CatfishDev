@@ -5,6 +5,36 @@ var router = express.Router();
 var mysql = require('./dbcon.js');
 
 
+function getProteinID(res,mysql,context,complete){
+
+}
+
+function insertGeneID(req,res,mysql,complete){
+    console.log(req.body);
+    var query = 'INSERT INTO GeneID ( NCBI_ProteinID, NCBI_GeneID, Annotation) Value (?,?,?)'; 
+    var inserts = [req.body.Input_ProteinIDA, req.body.In_GeneID, req.body.Ann_ProteinIDA];
+    mysql.pool.query(query,inserts, function(error,results, fields){
+        if(error){
+            res.write(JSON.stringify(error));
+        }
+        complete();
+    });
+}
+
+
+function insertOrtholog(req,res,mysql,complete){
+    console.log('Adding Ortholog:\n');
+    console.log(req.body);
+    var query = 'INSERT INTO Ortholog (ProteinIDA, Organism, ProteinIDB, Experimental_condition) VALUES (?,?,?,?)';
+    var inserts = [req.body.Input_ProteinIDA,req.body.Organism,req.body.Input_ProteinIDB,req.body.Exp_Val];
+    mysql.pool.query(query,inserts, function(error,results, fields){
+        if(error){
+            res.write(JSON.stringify(error));
+        }
+        complete();
+    });      
+    
+}
 
 function getOrganism(res, mysql, context, complete){
     mysql.pool.query("SELECT Organism_Type from Organism", function(error, results, fields){
@@ -25,45 +55,42 @@ function getOrganism(res, mysql, context, complete){
 router.get('/',function(req,res,next){
     var context = {};
     var callbackCount = 0;
+    //add the js scripts to the front end.
+    context.jsscripts =["delete.js","addInteraction.js"];
     getOrganism(res,mysql,context,complete);
-    mysql.pool.query('SELECT NCBI_ProteinID, ProteinIDB, Annotation, Organism  FROM ' 
-    + 'GeneID as a inner join Ortholog as b On a.NCBI_ProteinID =b.ProteinIDA', function(err,rows,fields){
+    mysql.pool.query('select o.id,g.NCBI_ProteinID,g2.NCBI_ProteinID as NCBI_ProteinID2, g2.Annotation, org.Organism_Type from Ortholog as o ' +
+'inner join geneid as g on g.id = o.ProteinIDA inner join geneid as g2 on g2.id = o.ProteinIDB inner join organism as org on o.Organism = org.Organism_id'
+    , function(err,rows,fields){
         if(err){
             next(err);
             return;
         }
+        //console.log(JSON.stringify(rows));
         row_data = {};
         row_data.inters = [];
         row_data.organisms = [];
         for( row in rows){
             inter = {};
             organ = {};
-
+            inter.id = rows[row].id;
             inter.ProteinID_A = rows[row].NCBI_ProteinID;
-            inter.ProteinID_B = rows[row].ProteinIDB;
+            inter.ProteinID_B = rows[row].NCBI_ProteinID2;
             inter.PA_annotation = rows[row].Annotation;
-            inter.Organism = rows[row].Organism;
-            //organ.Organism = rows[row].Organism;
+            inter.Organism = rows[row].Organism_Type;
             row_data.organisms.push(rows[row].Organism);
             row_data.inters.push(inter);
         }
         //make data into json
         context.results = JSON.stringify(rows);
         context.data = row_data;
-        // console.log('\nDataSet One: \n');
-        // console.log(context.results);
-        // if(callbackCount >= 1){
-        // console.log('\nDataSet Two: \n');
-        // console.log(context.someData);
-        // }
-        // console.log('This is the results:\n' + context.data);
+  
         complete();
 
     })
     function complete(){
         callbackCount++;
         if(callbackCount >= 2){
-            console.log(context);
+            console.log("Completed" + callbackCount);
             res.render('home', context);
         }
 
@@ -72,20 +99,29 @@ router.get('/',function(req,res,next){
 });
 
 router.post('/addOrtho',function(req,res,next){
-    mysql.pool.query('INSERT INTO GeneID ( NCBI_ProteinID, NCBI_GeneID, Annotation) Value (?,?,?)',
+    mysql.pool.query('INSERT INTO GeneID ( NCBI_ProteinID, NCBI_GeneID, Annotation) values (?,?,?)',
     [req.body.Input_ProteinIDA, req.body.In_GeneID, req.body.Ann_ProteinIDA], function(err,result){
         if(err){
             next(err)
             return;
         }
-        mysql.pool.query('INSERT INTO Ortholog (ProteinIDA, Organism, ProteinIDB, Experimental_condition) VALUES (?,?,?,?)',
+        console.log("This is the name of my organism \n" + JSON.stringify(req.body));
+        
+        mysql.pool.query(
+            'INSERT INTO Ortholog (ProteinIDA, Organism, ProteinIDB, Experimental_condition)  values (' +
+            '(select id from GeneID where NCBI_ProteinID = ?),'+ 
+            '(select Organism_id from Organism where Organism_Type = ? and Organism_Type is not null),' + 
+            ' (select id from GeneID where NCBI_ProteinID = ?  and NCBI_ProteinID is not null),' +
+            ' ?)',
         [req.body.Input_ProteinIDA,req.body.Organism,req.body.Input_ProteinIDB,req.body.Exp_Val], function(err,result){
             if(err){
                 next(err);
                 return;
             }
+            
             res.redirect('/');
         });
+        
     });
 });
   

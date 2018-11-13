@@ -27,7 +27,9 @@
   </a>
 </div> --}}
 
-<form method="POST" action="/addOrtho"> 
+
+
+<form method="POST" action="/addOrtho" id="orthoData"> 
   <div class="form-inline">
     <label for="ProteinID">ProteinId A: </label>
     <input type="text" class="form-control" id="Input_ProteinIDA" name="Input_ProteinIDA">
@@ -40,16 +42,21 @@
     <label for="ProteinID">Annotation Protein A: </label>
     <input type="text" class="form-control" id="Ann_ProteinIDA" name="Ann_ProteinIDA">
   </div>
-  <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Organism Selection:
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+{{!--   <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Organism Selection:
+      </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+          {{#each someData}}
+          <button class="dropdown-item" type="button" id="Organism">{{this}}</button>
+          {{/each}} 
+        </div>
+  </div> --}}
+  <select name="Organism">
     {{#each someData}}
-    <button class="dropdown-item" type="button">{{this}}</button>
-    {{/each}} 
-  </div>
-  </div>
+      <option value="{{this}}">{{this}}</option>
+    {{/each}}
+  </select>
   <div class="form-inline">
     <label for="ProteinID">ProteinId B: </label>
     <input type="text" class="form-control" id="Input_ProteinIDB" name="Input_ProteinIDB">
@@ -60,6 +67,8 @@
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+
+
 <br>
 <form method="POST" action="/addGeneExp"> 
   <div class="form-inline">
@@ -90,11 +99,12 @@
       {{#data.inters}}
       {{!-- {{#each data.Interactome}} --}}
       <tr>
+          <td id="id" style="display:none;">{{id}} </td>
           <td id="P_ida">{{ProteinID_A}}</td>
           <td id="P_idb">{{ProteinID_B}}</td>
           <td id="PA_anno">{{PA_annotation}}</td>
           <td id="Organism">{{Organism}}</td>
-          <td id="delete"> <input type="button" value="delete" onclick="del_row(this)" /></td>
+          <td id="delete"> <input type="button" value="delete" onclick="deleteInteraction(this)" /></td>
           <td id="edit"> <input type="button" value="edit" onClick="modifyRow(this)"/></td>
       </tr>
       {{/data.inters}}

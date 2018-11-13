@@ -5,6 +5,7 @@ var handlebars = require('express-handlebars');
 var async = require('async');
 var mysql = require('./dbcon.js');
 var catfish = require('./catfish.js');
+var catfish2 = require('./catfish2.js')
 
 
 
@@ -12,6 +13,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use('/',express.static('public'));
 app.use('/', catfish);
+app.use('/', catfish2);
 
 
 
@@ -33,32 +35,7 @@ app.set('view engine', 'handlebars');
 
 app.set('port', process.env.PORT || 3011);
 
-function insertGeneID(req,res,mysql,complete){
-    console.log(req.body);
-    var query = 'INSERT INTO GeneID ( NCBI_ProteinID, NCBI_GeneID, Annotation) Value (?,?,?)'; 
-    var inserts = [req.body.Input_ProteinIDA, req.body.In_GeneID, req.body.Ann_ProteinIDA];
-    mysql.pool.query(query,inserts, function(error,results, fields){
-        if(error){
-            res.write(JSON.stringify(error));
-        }
-        complete();
-    });
-}
 
-
-function insertOrtholog(req,res,mysql,complete){
-    console.log('Adding Ortholog:\n');
-    console.log(req.body);
-    var query = 'INSERT INTO Ortholog (ProteinIDA, Organism, ProteinIDB, Experimental_condition) VALUES (?,?,?,?)';
-    var inserts = [req.body.Input_ProteinIDA,req.body.Organism,req.body.Input_ProteinIDB,req.body.Exp_Val];
-    mysql.pool.query(query,inserts, function(error,results, fields){
-        if(error){
-            res.write(JSON.stringify(error));
-        }
-        complete();
-    });      
-    
-}
 
 
 
