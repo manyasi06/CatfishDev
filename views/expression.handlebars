@@ -1,11 +1,13 @@
 {{> header}}
 
 <br>
-<form method="POST" action="/addGeneExp"> 
-  <div class="form-inline">
-    <label for="ProteinID">ProteinId:</label>
-    <input type="text" class="form-control" id="GID" name="GID">
-  </div>
+<form method="POST" action="/addGeneExp">
+ <label for="GID">Protein ID Two: </label>
+  <select name="GID">
+    {{#pDataSet.proteinIds}}
+      <option value="{{proteinName}}" name="GID" >{{proteinName}}</option>
+    {{/pDataSet.proteinIds}}
+  </select>  
   <div class="form-inline">
     <label for="Protein">Sample Name</label>
     <input type="text" class="form-control" id="SID" name="SID">
@@ -16,3 +18,26 @@
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+
+<br>
+
+<table id="expression" name="expression" style="border:  1px solid black">
+    <thead>
+      <th>ProteinID</th>
+      <th>Sample Info</th>
+      <th>Expression</th>
+    </thead>
+    <tbody id="Interactome_body" style="border:  1px solid black">
+      {{#geneIDList.datas}}
+      {{!-- {{#each data.Interactome}} --}}
+      <tr>
+          <td id="id" style="display:none;">{{id}} </td>
+          <td id="P_ida">{{proteinID}}</td>
+          <td id="P_idb">{{sample_info}}</td>
+          <td id="PA_anno">{{expression}}</td>
+          <td id="delete"> <input type="button" value="delete" onclick="deleteEprex({{id}})" /></td>
+          <td id="edit"> <input type="button" value="edit" onClick="modifyRow(this)"/></td>
+      </tr>
+      {{/geneIDList.datas}}
+    </tbody>
+</table>

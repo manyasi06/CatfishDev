@@ -101,7 +101,7 @@ router.get('/',function(req,res,next){
         callbackCount++;
         if(callbackCount >= 3){
             //console.log("Completed" + callbackCount);
-            console.log(context);
+            //console.log(context);
             res.render('home', context);
         }
 
@@ -116,7 +116,7 @@ router.post('/addOrtho',function(req,res,next){
     callback = 0;
     var alpha = 'unchecked';
     getProteinID(res,req,mysql, complete,checkVal);
-    console.log("Is this running:\n" + req.body.Input_ProteinIDB + "\n");
+    
     //if(a === 'true'){
       //  console.log("Test worked");
         //res.redirect('/')
@@ -176,7 +176,7 @@ router.post('/addOrtho',function(req,res,next){
                 });
             });
         }else{
-            console.log("already present");
+            //console.log("already present");
             var query2 = 'INSERT INTO Ortholog (ProteinIDA, Organism, ProteinIDB, Experimental_condition)  values (' +
                     '(select id from GeneID where NCBI_ProteinID = ?),'+ 
                     '(select Organism_id from Organism where Organism_Type = ? and Organism_Type is not null),' + 
@@ -197,7 +197,7 @@ router.post('/addOrtho',function(req,res,next){
 
     function complete(){
         callbackCount++;
-        console.log("This is my check value: " + alpha == 'true');
+        //console.log("This is my check value: " + alpha == 'true');
         if(callbackCount == 1 && alpha == 'unchecked'){
             final();
             //console.log("Completed: + callbackCount);
@@ -220,11 +220,11 @@ router.post('/addGeneExp',function(req,res,next){
     mysql.pool.query('INSERT INTO RNA_seq_Sample_info (ProteinNcbiID, Sample_info, Expression) values (?,?,?)',
     [req.body.GID,req.body.SID,req.body.ExpreVal],function(err,result){
         if(err){
-            console.log("Error");
+            //console.log("Error");
             next(err);
             return;
         }
-        res.redirect('/');
+        res.redirect('/expression');
     });
 });
 
@@ -252,8 +252,8 @@ router.get('/organism',function(req,res,next){
         context.results = JSON.stringify(rows);
         context.data = row_data;
 
-        console.log(context.data);
-        console.log('\nThis is the results:\n' + context.data);
+        //console.log(context.data);
+        //console.log('\nThis is the results:\n' + context.data);
         
         res.render('organism', context);
     }); 

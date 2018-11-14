@@ -8,3 +8,14 @@
   console.log( $( this ).serialize() );
 });
 */
+
+function updateInt(id){
+    $.ajax({
+        url: '/' + id,
+        type: 'PUT',
+        data: $('#update-gene').serialize(),
+        success: function(result){
+            window.location.replace("./");
+        }
+    })
+};

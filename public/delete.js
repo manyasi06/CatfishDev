@@ -12,3 +12,14 @@ function deleteInteraction(id){
         }
     })
 };
+
+function deleteEprex(id){
+    $.ajax({
+        url: '/expression/' + id,
+        type: 'DELETE',
+        success: function(result){
+        	console.log("Delete Success");
+            window.location.reload(true);
+        }
+    })
+};
