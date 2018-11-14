@@ -20,7 +20,7 @@
       <tr>
           <td id="id"style="display:none">{{id}}</td>
           <td id="Organism" name="Organism">{{Organism}}</td>
-          <td id="delete"> <input type="button" value="delete" onclick="del_row(this)" /></td>
+          <td id="delete"> <input type="button" value="delete" onclick="deleteInteraction({{id}})" /></td>
           <td id="edit"> <input type="button" value="edit" onClick="modifyRow(this)"/></td>
       </tr>
       {{/data.inters}}

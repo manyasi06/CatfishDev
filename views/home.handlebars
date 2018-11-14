@@ -1,31 +1,5 @@
 {{> header}}
-{{!-- 
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-  <ol class="carousel-indicators">
-    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-  </ol>
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img class="d-block w-100" src="/images/corn.jpg" alt="First slide">
-    </div>
-    <div class="carousel-item">
-      <img class="d-block w-100" src="/images/corn2.jpg" alt="Second slide">
-    </div>
-    <div class="carousel-item">
-      <img class="d-block w-100" src="/images/fungus.jpg" alt="Third slide">
-    </div>
-  </div>
-  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div> --}}
+
 
 
 
@@ -42,25 +16,19 @@
     <label for="ProteinID">Annotation Protein A: </label>
     <input type="text" class="form-control" id="Ann_ProteinIDA" name="Ann_ProteinIDA">
   </div>
-{{!--   <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Organism Selection:
-      </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-          {{#each someData}}
-          <button class="dropdown-item" type="button" id="Organism">{{this}}</button>
-          {{/each}} 
-        </div>
-  </div> --}}
+  <label for="Organism">Select your Organism: </label>
   <select name="Organism">
     {{#each someData}}
       <option value="{{this}}">{{this}}</option>
     {{/each}}
   </select>
-  <div class="form-inline">
-    <label for="ProteinID">ProteinId B: </label>
-    <input type="text" class="form-control" id="Input_ProteinIDB" name="Input_ProteinIDB">
-  </div>
+  <br>
+  <label for="Input_ProteinIDB">Protein ID Two: </label>
+  <select name="Input_ProteinIDB">
+    {{#geneIDList.datas}}
+      <option value="{{proteinName}}" name="Input_ProteinIDB" >{{proteinName}}</option>
+    {{/geneIDList.datas}}
+  </select>
   <div class="form-inline">
     <label for="ProteinID">Experimental Condition: </label>
     <input type="text" class="form-control" id="Exp_Val" name="Exp_Val">
@@ -104,7 +72,7 @@
           <td id="P_idb">{{ProteinID_B}}</td>
           <td id="PA_anno">{{PA_annotation}}</td>
           <td id="Organism">{{Organism}}</td>
-          <td id="delete"> <input type="button" value="delete" onclick="deleteInteraction(this)" /></td>
+          <td id="delete"> <input type="button" value="delete" onclick="deleteInteraction({{id}})" /></td>
           <td id="edit"> <input type="button" value="edit" onClick="modifyRow(this)"/></td>
       </tr>
       {{/data.inters}}

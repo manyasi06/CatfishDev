@@ -1,0 +1,18 @@
+{{> header}}
+
+<br>
+<form method="POST" action="/addGeneExp"> 
+  <div class="form-inline">
+    <label for="ProteinID">ProteinId:</label>
+    <input type="text" class="form-control" id="GID" name="GID">
+  </div>
+  <div class="form-inline">
+    <label for="Protein">Sample Name</label>
+    <input type="text" class="form-control" id="SID" name="SID">
+  </div>
+  <div class="form-inline">
+    <label for="Protein">Add Gene Expression</label>
+    <input type="number" step="any" class="form-control" id="ExpreVal" name="ExpreVal">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
