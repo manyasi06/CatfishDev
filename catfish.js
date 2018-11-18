@@ -45,17 +45,22 @@ function getAllProteinIDS(res,req,mysql,context,complete){
 
 
 /*The purpose of this function is to get the list of organisms*/
-function getOrganism(res, mysql, context, complete){
-    mysql.pool.query("SELECT Organism_Type from Organism", function(error, results, fields){
+function getOrganism(res,req, mysql, context, complete){
+    mysql.pool.query("SELECT Organism_id,Organism_Type from Organism", function(error, results, fields){
         if(error){
             res.write(JSON.stringify(error));
             res.end();
         }
-        someData = [];
+        someDatas = {};
+        someDatas.List = [];
         for(row in results){
-            someData.push(results[row].Organism_Type);
+            data = {};
+            data.id = results[row].Organism_id;
+            data.Organism = results[row].Organism_Type;
+            someDatas.List.push(data);
         }
-        context.someData = someData;
+
+        context.oData = someDatas;
         complete();
     });
 }
@@ -230,33 +235,43 @@ router.post('/addGeneExp',function(req,res,next){
 
 
 router.get('/organism',function(req,res,next){
+    var callbackCount = 0;
     var context = {};
+    getOrganism(res,req, mysql, context, complete);
     
-    mysql.pool.query('SELECT Organism_Type from Organism',function(err,rows,fields){
-        if(err){
-            console.log("Error\n");
-            next(err);
-            return;
-        }
-        console.log(rows);
-        row_data = {};
-        row_data.inters = [];
-        row_data.organisms = [];
-        for( row in rows){
-            inter = {};
-            inter.id = rows[row].Organism_id; //test your organism id.
-            inter.Organism = rows[row].Organism_Type;
-            row_data.inters.push(inter);
-        }
-        //make data into json
-        context.results = JSON.stringify(rows);
-        context.data = row_data;
+    // mysql.pool.query('SELECT Organism_Type from Organism',function(err,rows,fields){
+    //     if(err){
+    //         console.log("Error\n");
+    //         next(err);
+    //         return;
+    //     }
+    //     console.log(rows);
+    //     row_data = {};
+    //     row_data.inters = [];
+    //     row_data.organisms = [];
+    //     for( row in rows){
+    //         inter = {};
+    //         inter.id = rows[row].Organism_id; //test your organism id.
+    //         inter.Organism = rows[row].Organism_Type;
+    //         row_data.inters.push(inter);
+    //     }
+    //     //make data into json
+    //     context.results = JSON.stringify(rows);
+    //     context.data = row_data;
 
-        //console.log(context.data);
-        //console.log('\nThis is the results:\n' + context.data);
+    //     //console.log(context.data);
+    //     //console.log('\nThis is the results:\n' + context.data);
         
-        res.render('organism', context);
-    }); 
+    //     res.render('organism', context);
+    // }); 
+
+    function complete(){
+        callbackCount++;
+        if(callbackCount == 1)
+        {
+            console.log(context.oData);
+            res.render('organism',context);  
+        }}
 });
 
 router.post('/addOrganism', function(req,res,next){

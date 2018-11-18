@@ -28,16 +28,16 @@
       <th>Expression</th>
     </thead>
     <tbody id="Interactome_body" style="border:  1px solid black">
-      {{#geneIDList.datas}}
+      {{#eDataSet.List}}
       {{!-- {{#each data.Interactome}} --}}
       <tr>
           <td id="id" style="display:none;">{{id}} </td>
-          <td id="P_ida">{{proteinID}}</td>
-          <td id="P_idb">{{sample_info}}</td>
-          <td id="PA_anno">{{expression}}</td>
+          <td id="Pid" style="display:none">{{ProteinID}}</td>
+          <td id="sample_info">{{Sample_info}}</td>
+          <td id="expression">{{Expression}}</td>
           <td id="delete"> <input type="button" value="delete" onclick="deleteEprex({{id}})" /></td>
           <td id="edit"> <input type="button" value="edit" onClick="modifyRow(this)"/></td>
       </tr>
-      {{/geneIDList.datas}}
+      {{/eDataSet.List}}
     </tbody>
 </table>

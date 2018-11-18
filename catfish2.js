@@ -26,6 +26,70 @@ function getAllProteinIDS(res,req,mysql,context,complete){
 }
 
 
+function getExperiments(res,req,mysql,context,complete){
+    var search = 'select id, Experimental_Type from Experimental_validation';
+    mysql.pool.query(search,function(error,results,fields){
+        if(error){
+            res.write(JSON.stringify(error));
+            res.end();
+        }
+        ExpList = {};
+        ExpList.experiments= [];
+
+        for(row in results){
+            pData = {};
+            pData.id = results[row].id;
+            pData.experimentName = results[row].Experimental_Type;
+            ExpList.experiments.push(pData);
+        }
+        context.pDataSet = ExpList;
+        complete();
+    });
+}
+
+function getExpressionData(req,res,mysql,context,complete){
+    query = 'select id, ProteinNcbiID, Sample_info, Expression from rna_seq_sample_info';
+    mysql.pool.query(query,function(error,results,fields){
+        if(error){
+            res.write(JSON.stringify(error));
+            res.end();
+        }
+    
+        Express = {};
+        Express.List = [];
+        for (row in results)
+        {
+            pData = {};
+            pData.id = results[row].id;
+            pData.ProteinID = results[row].ProteinNcbiID;
+            pData.Sample_info = results[row].Sample_info;
+            pData.Expression = results[row].Expression;
+            Express.List.push(pData);
+        }
+        context.eDataSet = Express;
+        complete();
+    });
+    
+}
+
+router.get('/Experiments',function(req,res){
+    context = {};
+    callbackCount = 0;
+    getExperiments(res,req,mysql,context,complete);
+    function complete()
+    {
+        callbackCount++;
+        if(callbackCount >= 1)
+        {
+            //console.log("Completed" + callbackCount);
+            console.log(context.pDataSet);
+            res.render('Experiments', context);
+        };
+
+    };
+});
+
+
 
 router.delete('/:id',function(req,res){
 	//var mysql = req.app.get('mysql');
@@ -45,7 +109,7 @@ router.delete('/:id',function(req,res){
 
 })
 
-router.delete('/organsim/:id',function(req,res){
+router.delete('/organism/:id',function(req,res){
 	//var mysql = req.app.get('mysql');
 	var sql = "delete from organism where Organism_id=?";
 	var insert = [req.params.id];
@@ -63,10 +127,9 @@ router.delete('/organsim/:id',function(req,res){
 
 })
 
-
-router.delete('/expression/:id',function(req,res){
+router.delete('/Experiments/:id',function(req,res){
 	//var mysql = req.app.get('mysql');
-	var sql = "delete from rna_seq_sample_info where id=?";
+	var sql = 'delete from Experimental_validation where id = ?';
 	var insert = [req.params.id];
 	mysql.pool.query(sql,insert, function(error,rows,fields){
 		if(error){
@@ -82,41 +145,53 @@ router.delete('/expression/:id',function(req,res){
 
 })
 
+router.delete('/expression/:id',function(req,res){
+	//var mysql = req.app.get('mysql');
+	var sql = "delete from rna_seq_sample_info where id=?";
+    var insert = [req.params.id];
+    //console.log(req.params.id);
+	mysql.pool.query(sql,insert, function(error,rows,fields){
+		if(error){
+                res.write(JSON.stringify(error));
+                res.status(400);
+                res.end();
+            }else{
+                res.status(202).end();
+            }
+
+	})
+
+
+})
+
+// router.delete('/organism/:id',function(req,res){
+// 	//var mysql = req.app.get('mysql');
+// 	var sql = "delete from Organism where Organism_id=?";
+//     var insert = [req.params.id];
+// 	mysql.pool.query(sql,insert, function(error,rows,fields){
+// 		if(error){
+//                 res.write(JSON.stringify(error));
+//                 res.status(400);
+//                 res.end();
+//             }else{
+//                 res.status(202).end();
+//             }
+
+// 	})
+
+
+// })
+
 router.get('/expression',function(req,res,next){
 	context = {};
 	callbackCount = 0;
-	query = 'select rna_seq_sample_info.id, g.NCBI_ProteinID, Sample_info, Expression from rna_seq_sample_info inner join geneid as g on g.NCBI_ProteinID = rna_seq_sample_info.ProteinNcbiID';
-	getAllProteinIDS(res,req,mysql,context,complete);
-	mysql.pool.query(query,function(error,results,fields){
-		if(error){
-			next(error)
-			return;
-		}
-		//console.log(results);
-		
-		
-		geneIDList = {};
-        geneIDList.datas = [];
-
-        for(row in results){
-            data = {};
-            data.id = results[row].id;
-            data.proteinID = results[row].NCBI_ProteinID;
-            data.sample_info = results[row].Sample_info;
-            data.expression = results[row].Expression;
-            geneIDList.datas.push(data);
-        }
-	
-        context.geneIDList = geneIDList;
-        console.log(context.geneIDList);
-		//res.render('expression',context);
-		complete();
-	})
+    getAllProteinIDS(res,req,mysql,context,complete);
+    getExpressionData(req,res,mysql,context,complete);
 	function complete(){
         callbackCount++;
         if(callbackCount >= 2){
             //console.log("Completed" + callbackCount);
-            console.log(context.pDataSet);
+            console.log(context.eDataSet);
             res.render('expression', context);
         }
 

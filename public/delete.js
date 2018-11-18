@@ -13,9 +13,36 @@ function deleteInteraction(id){
     })
 };
 
+/**This function is responsible for removing a value from the 
+ * RNA-seq table.
+ */
 function deleteEprex(id){
     $.ajax({
         url: '/expression/' + id,
+        type: 'DELETE',
+        success: function(result){
+        	console.log("Delete Success");
+            window.location.reload(true);
+        }
+    })
+};
+
+/**Delete a value in the experiment table. */
+function deleteExperiment(id){
+    $.ajax({
+        url: '/Experiments/' + id,
+        type: 'DELETE',
+        success: function(result){
+        	console.log("Delete Success");
+            window.location.reload(true);
+        }
+    })
+};
+
+
+function deleteOrganism(id){
+    $.ajax({
+        url: '/organism/' + id,
         type: 'DELETE',
         success: function(result){
         	console.log("Delete Success");

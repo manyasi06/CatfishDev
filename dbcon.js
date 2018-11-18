@@ -8,7 +8,7 @@ var pool = mysql.createPool({
   database        : 'cs340_musungub'
 });
 */
-/*
+
 
 var pool = mysql.createPool({
     connectionLimit : 10,
@@ -18,8 +18,8 @@ var pool = mysql.createPool({
     database        : 'CatfishDatabase',
     multipleStatements: true
   });
-  */
-
+  
+/*
 var pool = mysql.createPool({
     connectionLimit : 10,
     host            : 'localhost',
@@ -28,5 +28,6 @@ var pool = mysql.createPool({
     database        : 'data2',
     multipleStatements: true
   });
+*/
 
 module.exports.pool = pool;
