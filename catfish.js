@@ -128,7 +128,7 @@ router.get('/',function(req,res,next){
         callbackCount++;
         if(callbackCount >= 4){
             //console.log("Completed" + callbackCount);
-            console.log(context.pDataSet);
+            //console.log(context.pDataSet);
             res.render('home', context);
         }
 

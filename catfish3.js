@@ -2,6 +2,29 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('./dbcon.js');
 
+/*The purpose of this function is to get the list of organisms*/
+function getOrganism(res,req, mysql, context, complete){
+    var answ = [req.params.id]
+    mysql.pool.query("SELECT Organism_id,Organism_Type from Organism where Organism_id = ? and Organism_id is not null", answ,function(error, results, fields){
+        if(error){
+            console.log("Had a error")
+            res.write(JSON.stringify(error));
+            res.end();
+        }
+        someDatas = {};
+        someDatas.List = [];
+        for(row in results){
+            data = {};
+            data.id = results[row].Organism_id;
+            data.Organism = results[row].Organism_Type;
+            someDatas.List.push(data);
+        }
+
+        context.oData = someDatas;
+        complete();
+    });
+}
+
 
 function getAllProteinIDS(res,req,mysql,context,complete){
     var search = 'select id,NCBI_ProteinID,NCBI_GeneID,Annotation from geneid';
@@ -73,5 +96,43 @@ router.post('/addGene',function(req,res,next){
         res.redirect('/geneID');
     });
 });
+
+
+
+router.get('/:id',function(req,res){
+    //res.send("Going to this location");
+    callbackCount = 0;
+    var context = {};
+    console.log('Here getting data.')
+    getOrganism(res,req, mysql, context, complete);
+    function complete(){
+        callbackCount++;
+        if(callbackCount >= 1){
+            //console.log("Completed" + callbackCount);
+            console.log(context.oData);
+            res.render('Update', context);
+        }
+
+    }
+
+})
+
+router.put('/organism/:id',function(req,res){
+    var updateStat = 'update organism set Organism_Type=? where Organism_id =?';
+    console.log("UPdate statement");
+    console.log(req.body)
+    console.log(req.body.id)
+    console.log(req.body.Organism);
+    var insert = [req.body.Organism,req.body.id];
+    mysql.pool.query(updateStat,insert,function(error,results,fields){
+        if(error){
+            res.write(JSON.stringify(error));
+            res.status(400);
+            res.end();
+        }else{
+            res.status(202).end();
+        }
+    })
+})
 
 module.exports = router;

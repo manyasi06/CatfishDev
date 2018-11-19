@@ -11,17 +11,17 @@
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
-<table id="Interactome" style="border:  1px solid black">
+<table id="organism_info" style="border:  1px solid black">
     <thead>
       <th>Organism</th>
     </thead>
-    <tbody id="Interactome_body" style="border:  1px solid black">
+    <tbody id="organism_body" style="border:  1px solid black">
       {{#oData.List}}
       <tr>
           <td id="id" style="display:none;">{{id}}</td>
           <td id="Organism" name="Organism">{{Organism}}</td>
           <td id="delete"> <input type="button" value="delete" onclick="deleteOrganism({{id}})" /></td>
-          <td id="edit"> <input type="button" value="edit" onClick="modifyRow(this)"/></td>
+          <td id="edit"> <a href="/{{id}}">Update</a>{{!-- <input type="button" value="edit" onClick="updateOeganism({{id}})"/> --}}</td>
       </tr>
       {{/oData.List}}
     </tbody>

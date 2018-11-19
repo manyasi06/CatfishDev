@@ -9,13 +9,18 @@
 });
 */
 
-function updateInt(id){
+function updateOrganism(id){
     $.ajax({
-        url: '/' + id,
+        url: '/organism/' + id,
         type: 'PUT',
-        data: $('#update-gene').serialize(),
+        data: $('#update_organism').serialize(),
         success: function(result){
+          console.log("This is the " + result)
             window.location.replace("./");
         }
     })
 };
+
+function selectPlanet(id){
+    $("#planet-selector").val(id);
+}
