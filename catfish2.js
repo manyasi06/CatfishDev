@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('./dbcon.js');
 
-
+/**Function is responsible for getting the list of proteins. */
 function getAllProteinIDS(res,req,mysql,context,complete){
     var search = 'select id,NCBI_ProteinID from geneid';
 
@@ -82,7 +82,7 @@ router.get('/Experiments',function(req,res){
         if(callbackCount >= 1)
         {
             //console.log("Completed" + callbackCount);
-            console.log(context.pDataSet);
+            //console.log(context.pDataSet);
             res.render('Experiments', context);
         };
 
@@ -164,23 +164,6 @@ router.delete('/expression/:id',function(req,res){
 
 })
 
-// router.delete('/organism/:id',function(req,res){
-// 	//var mysql = req.app.get('mysql');
-// 	var sql = "delete from Organism where Organism_id=?";
-//     var insert = [req.params.id];
-// 	mysql.pool.query(sql,insert, function(error,rows,fields){
-// 		if(error){
-//                 res.write(JSON.stringify(error));
-//                 res.status(400);
-//                 res.end();
-//             }else{
-//                 res.status(202).end();
-//             }
-
-// 	})
-
-
-// })
 
 router.get('/expression',function(req,res,next){
 	context = {};

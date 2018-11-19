@@ -3,7 +3,7 @@
 
 <div>
 
-<form action="/addOrganism" method="POST">
+<form action="/addOrganism" method="POST" id="organism_info">
     <div class="form-inline">
         <label for="Organism">Organism: </label>
         <input type="text" class="form-control" id="Organism" name="Organism">
@@ -18,7 +18,7 @@
     <tbody id="Interactome_body" style="border:  1px solid black">
       {{#oData.List}}
       <tr>
-          <td id="id">{{id}}</td>
+          <td id="id" style="display:none;">{{id}}</td>
           <td id="Organism" name="Organism">{{Organism}}</td>
           <td id="delete"> <input type="button" value="delete" onclick="deleteOrganism({{id}})" /></td>
           <td id="edit"> <input type="button" value="edit" onClick="modifyRow(this)"/></td>

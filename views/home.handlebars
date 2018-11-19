@@ -18,27 +18,34 @@
   </div>
   <label for="Organism">Select your Organism: </label>
   <select name="Organism">
-    {{#each someData}}
-      <option value="{{this}}">{{this}}</option>
-    {{/each}}
+    {{#oData.List}}
+      <option value="{{Organism}}" id="{{id}}">{{Organism}}</option>
+    {{/oData.List}}
   </select>
   <br>
-  <label for="Input_ProteinIDB">Protein ID Two: </label>
+  <label for="Input_ProteinIDB">Protein ID B: </label>
   <select name="Input_ProteinIDB">
     {{#geneIDList.datas}}
       <option value="{{proteinName}}" name="Input_ProteinIDB" >{{proteinName}}</option>
     {{/geneIDList.datas}}
   </select>
-  <div class="form-inline">
+  {{!-- <div class="form-inline">
     <label for="ProteinID">Experimental Condition: </label>
     <input type="text" class="form-control" id="Exp_Val" name="Exp_Val">
-  </div>
+  </div> --}}
+  <label for="Exp_condition">Select your Experiment: </label>
+  <select name="Exp_condition">
+    {{#pDataSet.experiments}}
+      <option value="{{experimentName}}" id="{{id}}">{{experimentName}}</option>
+    {{/pDataSet.experiments}}
+  </select>
+  <br>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
 
 <br>
-<form method="POST" action="/addGeneExp"> 
+{{!-- <form method="POST" action="/addGeneExp"> 
   <div class="form-inline">
     <label for="ProteinID">ProteinId:</label>
     <input type="text" class="form-control" id="GID" name="GID">
@@ -52,7 +59,7 @@
     <input type="number" step="any" class="form-control" id="ExpreVal" name="ExpreVal">
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+</form> --}}
 
 
 <br>

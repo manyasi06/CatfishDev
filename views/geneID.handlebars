@@ -1,0 +1,45 @@
+{{> header}}
+
+
+<div>
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
+<form action="/addGene" method="POST">
+     <div class="form-inline">
+    <label for="PName">Protein Name:</label>
+    <input type="text" class="form-control" id="PName" name="PName">
+  </div>
+  <div class="form-inline">
+    <label for="GName">Ncbi Gene ID: </label>
+    <input type="text" step="any" class="form-control" id="GName" name="GName">
+  </div>
+  <div class="form-inline">
+    <label for="AName">Annotation: </label>
+    <input type="text" step="any" class="form-control" id="AName" name="AName">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<br>
+
+<table id="geneTable" name="geneTable" style="border:  1px solid black">
+    <thead>
+      <th>Protein Name</th>
+      <th>NCBI Gene ID</th>
+      <th>Annotation</th>
+    </thead>
+    <tbody id="Interactome_body" style="border:  1px solid black">
+      {{#geneIDList.datas}}
+      {{!-- {{#each data.Interactome}} --}}
+      <tr>
+          <td id="id" style="display:none;">{{id}} </td>
+          <td id="Pid">{{proteinName}}</td>
+          <td id="sample_info">{{Ncbi_GeneID}}</td>
+          <td id="expression">{{Annotation}}</td>
+          <td id="delete"> <input type="button" value="delete" onclick="deletegeneID({{id}})" /></td>
+          <td id="edit"> <input type="button" value="edit" onClick="modifyRow(this)"/></td>
+      </tr>
+      {{/geneIDList.datas}}
+    </tbody>
+</table>
+
+
+</div>
