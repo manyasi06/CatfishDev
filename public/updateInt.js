@@ -10,17 +10,21 @@
 */
 
 function updateOrganism(id){
+    var y = $('#org_id').val();
+    var x = $('#Organism').val();
+    console.log("This x: " + x);
+    console.log("This y: " + y);  
     $.ajax({
         url: '/organism/' + id,
         type: 'PUT',
-        data: $('#update_organism').serialize(),
+        data: {
+          id: y,
+          organism: x
+        },
         success: function(result){
           console.log("This is the " + result)
-            window.location.replace("./");
+            window.location.replace("./organism");
         }
     })
 };
 
-function selectPlanet(id){
-    $("#planet-selector").val(id);
-}
