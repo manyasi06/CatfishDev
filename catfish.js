@@ -214,9 +214,9 @@ router.post('/addOrtho',function(req,res,next){
   
 
 router.post('/addGeneExp',function(req,res,next){
-    
-    mysql.pool.query('INSERT INTO RNA_seq_Sample_info (ProteinNcbiID, Sample_info, Expression) values (?,?,?)',
-    [req.body.GID,req.body.SID,req.body.ExpreVal],function(err,result){
+    var query = 'INSERT INTO RNA_seq_Sample_info (ProteinNcbiID, Sample_info, Expression) '+ 
+                'values ((select id from geneid where NCBI_ProteinID =?),?,?)';
+    mysql.pool.query(query,[req.body.GID,req.body.SID,req.body.ExpreVal],function(err,result,fields){
         if(err){
             //console.log("Error");
             next(err);
@@ -255,8 +255,11 @@ router.post('/addOrganism', function(req,res,next){
 });
 
 router.post('/addExperiment',function(req,res,next){
-    var insert = 'insert into Experimental_validation (Experimental_Type) values (?)';
-    mysql.pool.query(insert,[req.body.experiments],function(err,result){
+    var addExper = 'insert into experimental_validation (Experimental_Type) ' + 
+                    'select ? from experimental_validation where not exists ' + 
+                    '(select Experimental_Type from experimental_validation ' +
+                    'where Experimental_Type = ?) Limit 1;'
+    mysql.pool.query(addExper,[req.body.experiments,req.body.experiments],function(err,result){
         if(err){
             next(err);
             return;

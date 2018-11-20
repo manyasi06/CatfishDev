@@ -48,24 +48,30 @@ function getExperiments(res,req,mysql,context,complete){
 }
 
 function getExpressionData(req,res,mysql,context,complete){
-    query = 'select id, ProteinNcbiID, Sample_info, Expression from rna_seq_sample_info';
+    query = 'select ra.id,ge.NCBI_ProteinID,ge.Annotation,ra.Sample_info,ra.Expression from rna_seq_sample_info as ra ' +
+            'inner join geneid as ge on ge.id = ra.ProteinNcbiID';
     mysql.pool.query(query,function(error,results,fields){
         if(error){
             res.write(JSON.stringify(error));
             res.end();
         }
-    
+
+        
+
         Express = {};
         Express.List = [];
+        
         for (row in results)
         {
             pData = {};
             pData.id = results[row].id;
-            pData.ProteinID = results[row].ProteinNcbiID;
+            pData.ProteinID = results[row].NCBI_ProteinID;
+            pData.Annotation = results[row].Annotation;
             pData.Sample_info = results[row].Sample_info;
             pData.Expression = results[row].Expression;
             Express.List.push(pData);
         }
+        
         context.eDataSet = Express;
         complete();
     });
