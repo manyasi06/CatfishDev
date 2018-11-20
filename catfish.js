@@ -86,7 +86,11 @@ function getOrganism(res, mysql, context, complete){
     });
 }
 
-
+/*This main function is responsible for displaying the orthologs in the data set.
+It will collect all the organisms
+It will collect all the Proteins
+It will collect all the Experiments
+*/
 router.get('/',function(req,res,next){
     var context = {};
     var callbackCount = 0;
@@ -238,7 +242,10 @@ router.get('/organism',function(req,res,next){
 });
 
 router.post('/addOrganism', function(req,res,next){
-    mysql.pool.query('INSERT INTO Organism (Organism_Type) values (?)',[req.body.Organism],function(err,result){
+    var orgAddQuery = 'insert into organism (Organism_Type)' +
+                    'select ? from organism where not exists (select Organism_Type from Organism' + 
+                    ' where Organism_Type = ?) Limit 1;'
+    mysql.pool.query(orgAddQuery,[req.body.Organism,req.body.Organism],function(err,result){
         if(err){
             next(err);
             return;
