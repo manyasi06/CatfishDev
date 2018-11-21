@@ -214,11 +214,15 @@ router.post('/addOrtho',function(req,res,next){
   
 
 router.post('/addGeneExp',function(req,res,next){
-    var query = 'INSERT INTO RNA_seq_Sample_info (ProteinNcbiID, Sample_info, Expression) '+ 
-                'values ((select id from geneid where NCBI_ProteinID =?),?,?)';
-    mysql.pool.query(query,[req.body.GID,req.body.SID,req.body.ExpreVal],function(err,result,fields){
+    console.log(req.body);
+    var addExp ='set @valone = (select id from geneid where NCBI_ProteinID =? and NCBI_ProteinID is not null); ' +
+                'INSERT INTO RNA_seq_Sample_info (ProteinNcbiID, Sample_info, Expression) select * from (select '+
+                ' (select @valone), ?, ?)  as tmp where not exists (select ra.ProteinNcbiID,ra.Sample_info,ra.Expression from ' +
+                'rna_seq_sample_info as ra inner join geneid as ge on ge.id = ra.ProteinNcbiID' +
+                ' and ra.ProteinNcbiID = (select id from geneid where NCBI_ProteinID =?)) limit 1;'
+    var insertVal = [req.body.GID,req.body.SID,req.body.ExpreVal,req.body.GID]
+    mysql.pool.query(addExp, insertVal, function(err,result,fields){
         if(err){
-            //console.log("Error");
             next(err);
             return;
         }
