@@ -249,8 +249,8 @@ router.get('/organism',function(req,res,next){
 });
 
 router.post('/addOrganism', function(req,res,next){
-    var orgAddQuery = 'insert into organism (Organism_Type)' +
-                    'select ? from organism where not exists (select Organism_Type from Organism' + 
+    var orgAddQuery = 'insert into Organism (Organism_Type)' +
+                    'select ? from Organism where not exists (select Organism_Type from Organism' + 
                     ' where Organism_Type = ?) Limit 1;'
     mysql.pool.query(orgAddQuery,[req.body.Organism,req.body.Organism],function(err,result){
         if(err){
