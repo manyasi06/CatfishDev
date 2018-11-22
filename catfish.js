@@ -262,8 +262,8 @@ router.post('/addOrganism', function(req,res,next){
 
 router.post('/addExperiment',function(req,res,next){
     var addExper = 'insert into experimental_validation (Experimental_Type) ' + 
-                    'select ? from experimental_validation where not exists ' + 
-                    '(select Experimental_Type from experimental_validation ' +
+                    'select ? from Experimental_validation where not exists ' + 
+                    '(select Experimental_Type from Experimental_validation ' +
                     'where Experimental_Type = ?) Limit 1;'
     mysql.pool.query(addExper,[req.body.experiments,req.body.experiments],function(err,result){
         if(err){
