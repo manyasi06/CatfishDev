@@ -1,5 +1,5 @@
 var mysql = require('mysql');
-/*
+
 var pool = mysql.createPool({
   connectionLimit : 10,
   host            : 'classmysql.engr.oregonstate.edu',
@@ -8,7 +8,7 @@ var pool = mysql.createPool({
   database        : 'cs340_musungub'
 });
 
-*/
+/*
 
 var pool = mysql.createPool({
     connectionLimit : 10,
@@ -20,11 +20,8 @@ var pool = mysql.createPool({
   });
 <<<<<<< HEAD
   
-/*
-=======
-  /*
-
->>>>>>> d61dcb4b5a178555c7baa0da892808a7b079c66c
+======
+  >>>>>>> d61dcb4b5a178555c7baa0da892808a7b079c66c
 var pool = mysql.createPool({
     connectionLimit : 10,
     host            : 'localhost',
