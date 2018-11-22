@@ -28,7 +28,7 @@ function getOrganism(res,req, mysql, context, complete){
 
 
 function getAllProteinIDS(res,req,mysql,context,complete){
-    var search = 'select id,NCBI_ProteinID,NCBI_GeneID,Annotation from geneid';
+    var search = 'select id,NCBI_ProteinID,NCBI_GeneID,Annotation from GeneID';
 
     mysql.pool.query(search,function(error,results,fields){
         if(error){
