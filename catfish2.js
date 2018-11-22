@@ -51,7 +51,7 @@ function getExpressionData(req,res,mysql,context,complete,next){
     
     var query = 'select ra.id, ra.ProteinNcbiID,ge.NCBI_ProteinID,ge.Annotation,ra.Sample_info,ra.Expression from RNA_seq_Sample_info as ra' +
     'inner join GeneID as ge on ge.id = ra.ProteinNcbiID';
-    mysql.pool.query(query,function(error,results,fields){
+    mysql.pool.query(query,function(error,results,fields,next){
         if(error){
             next(error);
             return;

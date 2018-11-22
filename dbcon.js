@@ -1,5 +1,5 @@
 var mysql = require('mysql');
-
+/*
 var pool = mysql.createPool({
   connectionLimit : 10,
   host            : 'classmysql.engr.oregonstate.edu',
@@ -8,7 +8,7 @@ var pool = mysql.createPool({
   database        : 'cs340_musungub'
 });
 
-/*
+*/
 
 var pool = mysql.createPool({
     connectionLimit : 10,
@@ -18,7 +18,7 @@ var pool = mysql.createPool({
     database        : 'CatfishDatabase',
     multipleStatements: true
   });
-
+/*
   var pool = mysql.createPool({
     connectionLimit : 10,
     host            : 'localhost',
