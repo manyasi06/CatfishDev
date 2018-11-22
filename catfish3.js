@@ -119,7 +119,7 @@ router.get('/:id',function(req,res){
 })
 
 router.put('/:id',function(req,res){
-    var updateStat = 'update organism set Organism_Type=? where Organism_id =?';
+    var updateStat = 'update Organism set Organism_Type=? where Organism_id =?';
     var insert = [req.body.organism,req.body.id];
     mysql.pool.query(updateStat,insert,function(error,results,fields){
         if(error){

@@ -4,7 +4,7 @@ var mysql = require('./dbcon.js');
 
 /**Function is responsible for getting the list of proteins. */
 function getAllProteinIDS(res,req,mysql,context,complete){
-    var search = 'select id,NCBI_ProteinID from geneid';
+    var search = 'select id,NCBI_ProteinID from GeneID';
 
     mysql.pool.query(search,function(error,results,fields){
         if(error){
@@ -48,8 +48,9 @@ function getExperiments(res,req,mysql,context,complete){
 }
 
 function getExpressionData(req,res,mysql,context,complete){
-    query = 'select ra.id,ge.NCBI_ProteinID,ge.Annotation,ra.Sample_info,ra.Expression from rna_seq_sample_info as ra ' +
-            'inner join geneid as ge on ge.id = ra.ProteinNcbiID';
+    
+    var query = 'select ra.id,ge.NCBI_ProteinID,ge.Annotation,ra.Sample_info,ra.Expression from RNA_seq_Sample_info as ra' +
+    'inner join GeneID as ge on ge.id = ra.ProteinNcbiID';
     mysql.pool.query(query,function(error,results,fields){
         if(error){
             next(error);
@@ -99,7 +100,7 @@ router.get('/Experiments',function(req,res){
 
 router.delete('/:id',function(req,res){
 	//var mysql = req.app.get('mysql');
-	var sql = "delete from ortholog where id=?";
+	var sql = "delete from Ortholog where id=?";
 	var insert = [req.params.id];
 	mysql.pool.query(sql,insert, function(error,rows,fields){
 		if(error){
@@ -117,7 +118,7 @@ router.delete('/:id',function(req,res){
 
 router.delete('/organism/:id',function(req,res){
 	//var mysql = req.app.get('mysql');
-	var sql = "delete from organism where Organism_id=?";
+	var sql = "delete from Organism where Organism_id=?";
 	var insert = [req.params.id];
 	mysql.pool.query(sql,insert, function(error,rows,fields){
 		if(error){
@@ -153,7 +154,7 @@ router.delete('/Experiments/:id',function(req,res){
 
 router.delete('/expression/:id',function(req,res){
 	//var mysql = req.app.get('mysql');
-	var sql = "delete from rna_seq_sample_info where id=?";
+	var sql = "delete from RNA_seq_Sample_info where id=?";
     var insert = [req.params.id];
     //console.log(req.params.id);
 	mysql.pool.query(sql,insert, function(error,rows,fields){
