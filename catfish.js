@@ -218,8 +218,7 @@ router.post('/addOrtho',function(req,res,next){
 router.post('/addGeneExp',function(req,res,next){
     console.log(req.body);
     var addExp ='set @valone = (select id from GeneID where NCBI_ProteinID = ? and NCBI_ProteinID is not null); ' +
-                'INSERT INTO RNA_seq_Sample_info (ProteinNcbiID, Sample_info, Expression) select * from ' +
-                '(select (select @valone), ?, ?)  as tmp where not exists' +
+                'INSERT INTO RNA_seq_Sample_info (ProteinNcbiID, Sample_info, Expression) select * from (select (select @valone), ?, ?)  as tmp where not exists' +
                 '(select ra.ProteinNcbiID,ra.Sample_info,ra.Expression from  RNA_seq_Sample_info as ' + 
                 ' ra inner join GeneID as ge on ge.id = ra.ProteinNcbiID and ra.ProteinNcbiID = (select @valone) ' +
                 'and ra.Sample_info = ? and ra.Expression = ?);';
