@@ -1,12 +1,22 @@
 {{> header}}
 
-<h1>Update Organism</h1>
+<div>
+<h1>Update {{organism.Organism_Type}}</h1>
 <form id="update-organism" action="/organism" method="POST">
+<<<<<<< HEAD
 	{{#oData.List}}
 	<li id="id" style="display:none;">{{id}}</li>
 	Organism Name: <input type="text" name="Organism" value="{{Organism}}"><br>
 	{{/oData.List}}	
+=======
+	
+	<input type="hidden" name="id" value="{{organism.Organism_id}}" id="org_id">
+	<br>
+	Organism Name: <input type="text" name="Organism"  id="Organism" value="{{organism.Organism_Type}}"><br>
+	
+>>>>>>> 4dc6fa2d91e1e733ab5a0bed585d9e5582937451
 </form>
-<button type="submit" class="btn btn-primary" onclick="updateOrganism({{id}})">Submit</button>
+<button type="submit" class="btn btn-primary" onclick="updateOrganism({{organism.Organism_id}})">Submit</button>
 
 
+</div>

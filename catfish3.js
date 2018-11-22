@@ -19,7 +19,8 @@ function getOrganism(res,req, mysql, context, complete){
             data.Organism = results[row].Organism_Type;
             someDatas.List.push(data);
         }
-
+        console.log("\n\n\nThis is my result: " + JSON.stringify(results[0]) + " \n");
+        context.organism = results[0];
         context.oData = someDatas;
         complete();
     });
@@ -103,13 +104,13 @@ router.get('/:id',function(req,res){
     //res.send("Going to this location");
     callbackCount = 0;
     var context = {};
-    console.log('Here getting data.')
+    //console.log('Here getting data.')
     getOrganism(res,req, mysql, context, complete);
     function complete(){
         callbackCount++;
         if(callbackCount >= 1){
             //console.log("Completed" + callbackCount);
-            console.log(context.oData);
+            console.log(context);
             res.render('Update', context);
         }
 
@@ -119,11 +120,7 @@ router.get('/:id',function(req,res){
 
 router.put('/:id',function(req,res){
     var updateStat = 'update organism set Organism_Type=? where Organism_id =?';
-    console.log("UPdate statement");
-    console.log(req.body)
-    console.log(req.body.id)
-    console.log(req.body.Organism);
-    var insert = [req.body.Organism,req.body.id];
+    var insert = [req.body.organism,req.body.id];
     mysql.pool.query(updateStat,insert,function(error,results,fields){
         if(error){
             res.write(JSON.stringify(error));

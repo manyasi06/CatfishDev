@@ -86,7 +86,11 @@ function getOrganism(res, mysql, context, complete){
     });
 }
 
-
+/*This main function is responsible for displaying the orthologs in the data set.
+It will collect all the organisms
+It will collect all the Proteins
+It will collect all the Experiments
+*/
 router.get('/',function(req,res,next){
     var context = {};
     var callbackCount = 0;
@@ -210,11 +214,15 @@ router.post('/addOrtho',function(req,res,next){
   
 
 router.post('/addGeneExp',function(req,res,next){
-    
-    mysql.pool.query('INSERT INTO RNA_seq_Sample_info (ProteinNcbiID, Sample_info, Expression) values (?,?,?)',
-    [req.body.GID,req.body.SID,req.body.ExpreVal],function(err,result){
+    console.log(req.body);
+    var addExp ='set @valone = (select id from geneid where NCBI_ProteinID =? and NCBI_ProteinID is not null); ' +
+                'INSERT INTO RNA_seq_Sample_info (ProteinNcbiID, Sample_info, Expression) select * from (select '+
+                ' (select @valone), ?, ?)  as tmp where not exists (select ra.ProteinNcbiID,ra.Sample_info,ra.Expression from ' +
+                'rna_seq_sample_info as ra inner join geneid as ge on ge.id = ra.ProteinNcbiID' +
+                ' and ra.ProteinNcbiID = (select id from geneid where NCBI_ProteinID =?)) limit 1;'
+    var insertVal = [req.body.GID,req.body.SID,req.body.ExpreVal,req.body.GID]
+    mysql.pool.query(addExp, insertVal, function(err,result,fields){
         if(err){
-            //console.log("Error");
             next(err);
             return;
         }
@@ -238,7 +246,10 @@ router.get('/organism',function(req,res,next){
 });
 
 router.post('/addOrganism', function(req,res,next){
-    mysql.pool.query('INSERT INTO Organism (Organism_Type) values (?)',[req.body.Organism],function(err,result){
+    var orgAddQuery = 'insert into organism (Organism_Type)' +
+                    'select ? from organism where not exists (select Organism_Type from Organism' + 
+                    ' where Organism_Type = ?) Limit 1;'
+    mysql.pool.query(orgAddQuery,[req.body.Organism,req.body.Organism],function(err,result){
         if(err){
             next(err);
             return;
@@ -248,8 +259,11 @@ router.post('/addOrganism', function(req,res,next){
 });
 
 router.post('/addExperiment',function(req,res,next){
-    var insert = 'insert into Experimental_validation (Experimental_Type) values (?)';
-    mysql.pool.query(insert,[req.body.experiments],function(err,result){
+    var addExper = 'insert into experimental_validation (Experimental_Type) ' + 
+                    'select ? from experimental_validation where not exists ' + 
+                    '(select Experimental_Type from experimental_validation ' +
+                    'where Experimental_Type = ?) Limit 1;'
+    mysql.pool.query(addExper,[req.body.experiments,req.body.experiments],function(err,result){
         if(err){
             next(err);
             return;

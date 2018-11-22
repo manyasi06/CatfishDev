@@ -24,6 +24,7 @@
 <table id="expression" name="expression" style="border:  1px solid black">
     <thead>
       <th>ProteinID</th>
+      <th>Annotation</th>
       <th>Sample Info</th>
       <th>Expression</th>
     </thead>
@@ -32,7 +33,8 @@
       {{!-- {{#each data.Interactome}} --}}
       <tr>
           <td id="id" style="display:none;">{{id}} </td>
-          <td id="Pid" style="display:none">{{ProteinID}}</td>
+          <td id="Pid">{{ProteinID}}</td>
+          <td id="annotation">{{Annotation}}</td>
           <td id="sample_info">{{Sample_info}}</td>
           <td id="expression">{{Expression}}</td>
           <td id="delete"> <input type="button" value="delete" onclick="deleteEprex({{id}})" /></td>
@@ -41,3 +43,5 @@
       {{/eDataSet.List}}
     </tbody>
 </table>
+<br>
+<input type="text" id="search" placeholder="  live search"></input>
