@@ -52,8 +52,8 @@ function getExpressionData(req,res,mysql,context,complete){
             'inner join geneid as ge on ge.id = ra.ProteinNcbiID';
     mysql.pool.query(query,function(error,results,fields){
         if(error){
-            res.write(JSON.stringify(error));
-            res.end();
+            next(error);
+            return;
         }
 
         
