@@ -72,6 +72,7 @@ function getOrganism(res, mysql, context, complete){
             res.write(JSON.stringify(error));
             res.end();
         }
+        console.log(results);
         someDatas = {};
         someDatas.List = [];
         for(row in results){
@@ -80,7 +81,7 @@ function getOrganism(res, mysql, context, complete){
             data.Organism = results[row].Organism_Type;
             someDatas.List.push(data);
         }
-
+        console.log(someDatas);
         context.oData = someDatas;
         complete();
     });
@@ -133,7 +134,7 @@ router.get('/',function(req,res,next){
         callbackCount++;
         if(callbackCount >= 4){
             //console.log("Completed" + callbackCount);
-            //console.log(context.pDataSet);
+            //console.log(context.oData);
             res.render('home', context);
         }
 
