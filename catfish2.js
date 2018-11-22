@@ -47,7 +47,7 @@ function getExperiments(res,req,mysql,context,complete){
     });
 }
 
-function getExpressionData(req,res,mysql,context,complete){
+function getExpressionData(req,res,mysql,context,complete,next){
     
     var query = 'select ra.id,ge.NCBI_ProteinID,ge.Annotation,ra.Sample_info,ra.Expression from RNA_seq_Sample_info as ra' +
     'inner join GeneID as ge on ge.id = ra.ProteinNcbiID';
@@ -176,7 +176,7 @@ router.get('/expression',function(req,res,next){
 	context = {};
 	callbackCount = 0;
     getAllProteinIDS(res,req,mysql,context,complete);
-    getExpressionData(req,res,mysql,context,complete);
+    getExpressionData(req,res,mysql,context,complete,next);
 	function complete(){
         callbackCount++;
         if(callbackCount >= 2){
