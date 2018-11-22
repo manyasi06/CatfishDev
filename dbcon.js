@@ -18,11 +18,8 @@ var pool = mysql.createPool({
     database        : 'CatfishDatabase',
     multipleStatements: true
   });
-<<<<<<< HEAD
-  
-======
-  >>>>>>> d61dcb4b5a178555c7baa0da892808a7b079c66c
-var pool = mysql.createPool({
+
+  var pool = mysql.createPool({
     connectionLimit : 10,
     host            : 'localhost',
     user            : 'root',
