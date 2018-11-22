@@ -117,7 +117,7 @@ router.get('/:id',function(req,res){
 
 })
 
-router.put('/organism/:id',function(req,res){
+router.put('/:id',function(req,res){
     var updateStat = 'update organism set Organism_Type=? where Organism_id =?';
     console.log("UPdate statement");
     console.log(req.body)

@@ -95,8 +95,8 @@ router.get('/',function(req,res,next){
     getOrganism(res,mysql,context,complete);
     getAllProteinIDS(res,req,mysql,context,complete);
     getExperiments(res,req,mysql,context,complete);
-    mysql.pool.query('select o.id,g.NCBI_ProteinID,g2.NCBI_ProteinID as NCBI_ProteinID2, g2.Annotation, org.Organism_Type from Ortholog as o ' +
-    'inner join geneid as g on g.id = o.ProteinIDA inner join geneid as g2 on g2.id = o.ProteinIDB inner join organism as org on o.Organism = org.Organism_id'
+    mysql.pool.query('select o.id,g.NCBI_ProteinID,g2.NCBI_ProteinID as NCBI_ProteinID2, g2.Annotation, org.Organism_Type from Ortholog as o ' + 
+    'inner join GeneID as g on g.id = o.ProteinIDA inner join GeneID as g2 on g2.id = o.ProteinIDB inner join organism as org on o.Organism = org.Organism_id'
     , function(err,rows,fields){
         if(err){
             next(err);

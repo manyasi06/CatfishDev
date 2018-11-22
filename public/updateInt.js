@@ -11,16 +11,16 @@
 
 function updateOrganism(id){
     $.ajax({
-        url: '/organism/' + id,
+        url: '/' + id,
         type: 'PUT',
         data: $('#update_organism').serialize(),
         success: function(result){
-          console.log("This is the " + result)
+          console.log("This is the " + data);
             window.location.replace("./");
         }
     })
 };
 
-function selectPlanet(id){
-    $("#planet-selector").val(id);
-}
+// function selectPlanet(id){
+//     $("#planet-selector").val(id);
+// }
