@@ -27,7 +27,7 @@ function getExperiments(res,req,mysql,context,complete){
 }
 
 function getProteinID(res,req,mysql,complete, checkVal){
-    var query = "select NCBI_ProteinID from geneid where NCBI_ProteinID = ?";
+    var query = "select NCBI_ProteinID from GeneID where NCBI_ProteinID = ?";
     var search = [req.body.Input_ProteinIDA]
     mysql.pool.query(query,search, function(error, results, fields){
         if(error){
@@ -42,7 +42,7 @@ function getProteinID(res,req,mysql,complete, checkVal){
 }
 
 function getAllProteinIDS(res,req,mysql,context,complete){
-    var search = 'select id,NCBI_ProteinID from geneid';
+    var search = 'select id,NCBI_ProteinID from GeneID';
 
     mysql.pool.query(search,function(error,results,fields){
         if(error){
