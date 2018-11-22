@@ -190,23 +190,23 @@ router.get('/expression',function(req,res,next){
 
 
 
-router.put('/:id', function(req, res){
-        var mysql = req.app.get('mysql');
-        console.log(req.body)
-        console.log(req.params.id)
-        var sql = "UPDATE GeneID SET NCBI_ProteinID = ?, NCBI_GeneID=?, Annotation=? WHERE id= ?";
-        var inserts = [req.body.fname, req.body.lname, req.body.homeworld, req.body.age, req.params.id];
-        sql = mysql.pool.query(sql,inserts,function(error, results, fields){
-            if(error){
-                console.log(error)
-                res.write(JSON.stringify(error));
-                res.end();
-            }else{
-                res.status(200);
-                res.end();
-            }
-        });
-    });
+// router.put('/:id', function(req, res){
+//         var mysql = req.app.get('mysql');
+//         console.log(req.body)
+//         console.log(req.params.id)
+//         var sql = "UPDATE GeneID SET NCBI_ProteinID = ?, NCBI_GeneID=?, Annotation=? WHERE id= ?";
+//         var inserts = [req.body.fname, req.body.lname, req.body.homeworld, req.body.age, req.params.id];
+//         sql = mysql.pool.query(sql,inserts,function(error, results, fields){
+//             if(error){
+//                 console.log(error)
+//                 res.write(JSON.stringify(error));
+//                 res.end();
+//             }else{
+//                 res.status(200);
+//                 res.end();
+//             }
+//         });
+//     });
 
 
 

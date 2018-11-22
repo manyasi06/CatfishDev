@@ -27,7 +27,7 @@ function getExperiments(res,req,mysql,context,complete){
 }
 
 function getProteinID(res,req,mysql,complete, checkVal){
-    var query = "select NCBI_ProteinID from geneid where NCBI_ProteinID = ?";
+    var query = "select NCBI_ProteinID from GeneID where NCBI_ProteinID = ?";
     var search = [req.body.Input_ProteinIDA]
     mysql.pool.query(query,search, function(error, results, fields){
         if(error){
@@ -42,7 +42,7 @@ function getProteinID(res,req,mysql,complete, checkVal){
 }
 
 function getAllProteinIDS(res,req,mysql,context,complete){
-    var search = 'select id,NCBI_ProteinID from geneid';
+    var search = 'select id,NCBI_ProteinID from GeneID';
 
     mysql.pool.query(search,function(error,results,fields){
         if(error){
@@ -99,14 +99,15 @@ router.get('/',function(req,res,next){
     getOrganism(res,mysql,context,complete);
     getAllProteinIDS(res,req,mysql,context,complete);
     getExperiments(res,req,mysql,context,complete);
-    mysql.pool.query('select o.id,g.NCBI_ProteinID,g2.NCBI_ProteinID as NCBI_ProteinID2, g2.Annotation, org.Organism_Type from Ortholog as o ' +
-    'inner join geneid as g on g.id = o.ProteinIDA inner join geneid as g2 on g2.id = o.ProteinIDB inner join organism as org on o.Organism = org.Organism_id'
+    mysql.pool.query('select o.id,g.NCBI_ProteinID,g2.NCBI_ProteinID as NCBI_ProteinID2, g2.Annotation, ' +
+    'org.Organism_Type from Ortholog as o inner join GeneID as g on g.id = o.ProteinIDA inner join GeneID as g2 on ' +
+    'g2.id = o.ProteinIDB inner join Organism as org on o.Organism = org.Organism_id'
     , function(err,rows,fields){
         if(err){
             next(err);
             return;
         }
-        //console.log(JSON.stringify(rows));
+        console.log(JSON.stringify(rows));
         row_data = {};
         row_data.inters = [];
         row_data.organisms = [];
