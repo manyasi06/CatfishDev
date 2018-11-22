@@ -184,7 +184,7 @@ router.post('/addOrtho',function(req,res,next){
                     ' (select id from GeneID where NCBI_ProteinID = ?  and NCBI_ProteinID is not null),' +
                     ' ?)';
                 var insert2 = [req.body.Input_ProteinIDA,req.body.Organism,req.body.Input_ProteinIDB,req.body.Exp_Val];
-                 mysql.pool.query(query2,insert2, function(err,result){
+                 mysql.pool.query(query2,insert2, function(err,result,next){
                         if(err){
                             next(err);
                             return;
