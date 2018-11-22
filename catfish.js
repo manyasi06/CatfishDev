@@ -106,7 +106,7 @@ router.get('/',function(req,res,next){
             next(err);
             return;
         }
-        //console.log(JSON.stringify(rows));
+        console.log(JSON.stringify(rows));
         row_data = {};
         row_data.inters = [];
         row_data.organisms = [];
