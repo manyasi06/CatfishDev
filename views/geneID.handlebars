@@ -34,7 +34,7 @@
           <td id="sample_info">{{Ncbi_GeneID}}</td>
           <td id="expression">{{Annotation}}</td>
           <td id="delete"> <input type="button" value="delete" onclick="deletegeneID({{id}})" /></td>
-          <td id="edit"> <input type="button" value="edit" onClick="modifyRow(this)"/></td>
+          <td id="edit" style="display:none"> <input type="button" value="edit" onClick="modifyRow(this)"/></td>
       </tr>
       {{/geneIDList.datas}}
     </tbody>
