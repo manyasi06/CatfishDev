@@ -22,8 +22,8 @@ function updateOrganism(id){
           organism: x
         },
         success: function(result){
-          console.log("This is the " + data);
-            window.location.replace("./");
+          //console.log("This is the " + data);
+            window.location.replace("./organism");
 
         }
     })

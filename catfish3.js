@@ -110,7 +110,7 @@ router.get('/:id',function(req,res){
         callbackCount++;
         if(callbackCount >= 1){
             //console.log("Completed" + callbackCount);
-            console.log(context);
+            //console.log(context);
             res.render('Update', context);
         }
 
@@ -119,6 +119,7 @@ router.get('/:id',function(req,res){
 })
 
 router.put('/:id',function(req,res){
+    console.log(req.body);
     var updateStat = 'update Organism set Organism_Type=? where Organism_id =?';
     var insert = [req.body.organism,req.body.id];
     mysql.pool.query(updateStat,insert,function(error,results,fields){
