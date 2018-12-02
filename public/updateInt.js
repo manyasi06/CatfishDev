@@ -29,3 +29,9 @@ function updateOrganism(id){
     })
 };
 
+function filterInteractions(){
+  //get the protein Name
+  var PName = document.getElementById("PName").value;
+  //construct url and reload
+  window.location = '/home/search/' +PName;
+}

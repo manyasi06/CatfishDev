@@ -45,21 +45,16 @@
 
 
 <br>
-{{!-- <form method="POST" action="/addGeneExp"> 
-  <div class="form-inline">
-    <label for="ProteinID">ProteinId:</label>
-    <input type="text" class="form-control" id="GID" name="GID">
-  </div>
-  <div class="form-inline">
-    <label for="Protein">Sample Name</label>
-    <input type="text" class="form-control" id="SID" name="SID">
-  </div>
-  <div class="form-inline">
-    <label for="Protein">Add Gene Expression</label>
-    <input type="number" step="any" class="form-control" id="ExpreVal" name="ExpreVal">
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form> --}}
+<form id="filter_interactions" action="" method="">
+  <label> Filter Interactions Based on Protein ID</label>
+  <select name="PName" id="PName">
+    {{#geneIDList.datas}}
+      <option value="{{proteinName}}" name="ProtFilter" >{{proteinName}}</option>
+    {{/geneIDList.datas}}
+  </select>
+  {{!-- <button type="button" value="Filter" onclick="filterInteractions()"></button> --}}
+  <input type="button" value="Filter" onclick="filterInteractions()">
+</form>
 
 
 <br>
