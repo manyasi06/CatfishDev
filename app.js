@@ -38,7 +38,7 @@ defaultLayout: 'main'
 app.set('view engine', 'handlebars');
 
 //add database schema
-var sequelize = require('sequelize');
+var Sequelize = require('sequelize');
  
 // sequelize initialization
 var sequelize = new Sequelize('UserDB','bmusungu','Bryan123!',{
