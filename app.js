@@ -38,7 +38,7 @@ defaultLayout: 'main'
 app.set('view engine', 'handlebars');
 
 //add database schema
-var Sequelize = require('sequelize');
+var sequelize = require('sequelize');
  
 // sequelize initialization
 var sequelize = new Sequelize('UserDB','bmusungu','Bryan123!',{
@@ -55,8 +55,36 @@ sequelize
   })
   .catch(err => {
     console.error('Unable to connect to the database:', err);
+});
+
+const User = sequelize.define('users',{
+      UserName: {
+          type: Sequelize.STRING
+      },
+      Pass: {
+          type: Sequelize.STRING
+      },
+      
+        // disable the modification of table names; By default, sequelize will automatically
+        // transform all passed model names (first parameter of define) into plural.
+        // if you don't want that, set the following
+        freezeTableName: true
+      
   });
 
+  // force: true will drop the table if it already exists
+User.sync({force: true}).then(() => {
+    // Table created
+    return User.create({
+      UserName: 'Bryan2',
+      Pass: 'Bryan123!'
+    });
+  });
+
+  User.findAll().then(user => {
+    console.log(user)
+  })
+  
 
 app.set('port', process.env.PORT || 3015);
 
