@@ -1,14 +1,4 @@
 var mysql = require('mysql');
-/*
-var pool = mysql.createPool({
-  connectionLimit : 10,
-  host            : 'classmysql.engr.oregonstate.edu',
-  user            : 'cs340_musungub',
-  password        : '1630',
-  database        : 'cs340_musungub'
-});
-
-*/
 
 var pool = mysql.createPool({
     connectionLimit : 10,
@@ -18,15 +8,18 @@ var pool = mysql.createPool({
     database        : 'CatfishDatabase',
     multipleStatements: true
   });
-/*
-  var pool = mysql.createPool({
-    connectionLimit : 10,
+
+var userPool = mysql.createPool({
+  connectionLimit : 10,
     host            : 'localhost',
-    user            : 'root',
-    password        : 'plb403ADM',
-    database        : 'data2',
+    user            : 'bmusungu',
+    password        : 'Bryan123!',
+    database        : 'UserDB',
     multipleStatements: true
-  });
-*/
+});
+
+
+
 
 module.exports.pool = pool;
+module.exports.userPool = userPool;

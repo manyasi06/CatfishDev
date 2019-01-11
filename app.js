@@ -3,7 +3,9 @@ var bodyParser = require('body-parser');
 var app = express();
 var handlebars = require('express-handlebars');
 var async = require('async');
+var cors = require('cors');
 var mysql = require('./dbcon.js');
+
 var catfish = require('./catfish.js');
 var catfish2 = require('./catfish2.js');
 var catfish3 = require('./catfish3.js');
@@ -16,6 +18,8 @@ app.use('/',express.static('public'));
 app.use('/', catfish);
 app.use('/', catfish2);
 app.use('/',catfish3);
+
+
 
 
 
@@ -34,27 +38,30 @@ defaultLayout: 'main'
 app.set('view engine', 'handlebars');
 
 //add database schema
+var Sequelize = require('sequelize');
+ 
+// sequelize initialization
+var sequelize = new Sequelize('UserDB','bmusungu','Bryan123!',{
+    host: 'localhost',
+    port:3306,
+    dialect: 'mysql'
+});
+ 
+// check database connection
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
+
 
 app.set('port', process.env.PORT || 3015);
 
 
 
-
-
-app.get('/Expression',function(req,res){
-    res.render('Add');
-    //res.send("This is the add interaction page");
-});
-  
-app.get('/Remove',function(req,res){
-    res.render('Remove');
-    //res.send("This to remove interactions");
-});
-
-app.get('/Update',function(req,res){
-    //res.send("This will be the redirect page to update");
-    res.render('Update');
-});
 
 
 app.use(function(req,res){

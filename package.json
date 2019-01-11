@@ -18,15 +18,19 @@
   "homepage": "https://github.com/manyasi06/CatfishDev#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "compression": "^1.6.0",
-    "cors": "^2.8.4",
+    "compression": "^1.7.3",
+    "cors": "^2.8.5",
     "express": "^4.16.3",
     "express-handlebars": "^3.0.0",
     "forever": "^0.15.3",
     "handlebars": "^4.0.12",
     "mongoose": "^5.2.12",
     "mysql": "^2.16.0",
-    "nodemon": "^1.18.7",
-    "path": "^0.12.7"
+    "mysql2": "^1.6.4",
+    "nodemon": "^1.18.9",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "sequelize": "^4.42.0"
   }
 }
